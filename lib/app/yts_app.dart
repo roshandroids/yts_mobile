@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yts_mobile/core/core.dart';
 
 /// Main App Widget
 class YtsApp extends ConsumerWidget {
@@ -8,11 +9,14 @@ class YtsApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const MaterialApp(
+    final goRouter = ref.watch(goRouterProvider);
+    return MaterialApp.router(
       title: 'Yts App',
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
-      home: Scaffold(),
+      routeInformationParser: goRouter.routeInformationParser,
+      routeInformationProvider: goRouter.routeInformationProvider,
+      routerDelegate: goRouter.routerDelegate,
     );
   }
 }
