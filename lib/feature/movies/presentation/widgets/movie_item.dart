@@ -15,9 +15,9 @@ class MovieItem extends ConsumerWidget {
     return Container(
       child: movieAsync.when(
         data: (MovieModel movie) {
-          return Text(
-            movie.titleEnglish,
-            style: Theme.of(context).textTheme.subtitle1,
+          return AppCachedNetworkImage(
+            imageUrl: movie.mediumCoverImage,
+            fit: BoxFit.cover,
           );
         },
         error: (Object error, StackTrace? stackTrace) {

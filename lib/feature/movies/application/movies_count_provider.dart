@@ -11,6 +11,6 @@ import 'package:yts_mobile/feature/movies/movies.dart';
 
 final moviesCountProvider = Provider<AsyncValue<int>>((ref) {
   return ref.watch(paginatedMoviesProvider(0)).whenData(
-        (PaginatedResponse<MovieModel> pageData) => pageData.results.length,
+        (PaginatedResponse<MovieModel> pageData) => pageData.totalResults,
       );
 });

@@ -15,10 +15,14 @@ class MoviesList extends ConsumerWidget {
     return randomPhotosCount.when(
       loading: ListItemShimmer.new,
       data: (int count) {
-        return ListView.builder(
+        return GridView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           controller: scrollController,
-          itemCount: count,
-          itemExtent: 50,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
           itemBuilder: (context, index) {
             final currentPhotoFromIndex = ref
                 .watch(paginatedMoviesProvider(index ~/ 20))

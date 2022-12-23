@@ -1,5 +1,6 @@
 export 'animations/animations.dart';
 export 'configs/app_configs.dart';
+export 'constants/constants.dart';
 export 'errors/error.dart';
 export 'extensions/extensions.dart';
 export 'models/models.dart';

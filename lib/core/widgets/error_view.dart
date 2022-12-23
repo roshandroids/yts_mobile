@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:yts_mobile/core/core.dart';
 
 /// Default error view widget
 class ErrorView extends StatelessWidget {
@@ -9,7 +10,7 @@ class ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Lottie.asset('assets/animations/error.json'),
+      child: Lottie.asset(AppAssets.errorAnimation),
     );
   }
 }
