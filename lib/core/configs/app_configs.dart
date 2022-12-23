@@ -7,8 +7,6 @@ class AppConfigs {
   /// cache should be force refreshed
   static const String dioCacheForceRefreshKey = 'dio_cache_force_refresh_key';
 
-  /// Base API URL of The YTS Movies API
-  ///
-  /// See: https://yts.mx/api
+  /// Base API URL of YTS movies
   static const String apiBaseUrl = 'https://yts.mx/api/v2';
 }

@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:yts_mobile/app/yts_app.dart';
-import 'package:yts_mobile/core/services/storage/hive_storage_service.dart';
-import 'package:yts_mobile/core/services/storage/storage_service.dart';
-import 'package:yts_mobile/core/services/storage/storage_service_provider.dart';
+import 'package:yts_mobile/app/app.dart';
+import 'package:yts_mobile/core/core.dart';
 
 void main() {
   runZonedGuarded<Future<void>>(

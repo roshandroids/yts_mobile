@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:yts_mobile/core/core.dart';
-import 'package:yts_mobile/core/services/http/http_service.dart';
 
 /// Http service implementation using the Dio package
 ///
@@ -36,7 +35,7 @@ class DioHttpService implements HttpService {
   @override
   Map<String, String> headers = {
     'accept': 'application/json',
-    'content-type': 'application/json'
+    'content-type': 'application/json',
   };
 
   @override
@@ -64,34 +63,22 @@ class DioHttpService implements HttpService {
   }
 
   @override
-  Future<dynamic> post(
+  Future<Map<String, dynamic>> post(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    final Response<dynamic> response = await dio.post<Map<String, dynamic>>(
-      endpoint,
-      queryParameters: queryParameters,
-    );
-
-    if (response.data == null || response.statusCode != 200) {
-      throw HttpException(
-        title: 'Http Error!',
-        statusCode: response.statusCode,
-        message: response.statusMessage,
-      );
-    }
-
-    return response.data;
-  }
-
-  @override
-  Future<dynamic> delete() {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  Future<dynamic> put() {
+  Future<Map<String, dynamic>> delete(String endpoint) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, dynamic>> put(String endpoint) {
     // TODO: implement put
     throw UnimplementedError();
   }

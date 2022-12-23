@@ -14,14 +14,16 @@ abstract class HttpService {
   });
 
   /// Http post request
-  Future<dynamic> post(
+  Future<Map<String, dynamic>> post(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
   });
 
   /// Http put request
-  Future<dynamic> put();
+  Future<Map<String, dynamic>> put(String endpoint);
 
   /// Http delete request
-  Future<dynamic> delete();
+  Future<Map<String, dynamic>> delete(
+    String endpoint,
+  );
 }

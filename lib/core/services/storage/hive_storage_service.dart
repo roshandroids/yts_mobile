@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:yts_mobile/core/services/storage/storage_service.dart';
+import 'package:yts_mobile/core/core.dart';
 
 /// [StorageService] interface implementation using the Hive package
 ///

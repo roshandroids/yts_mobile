@@ -2,8 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:yts_mobile/core/routes/route_paths.dart';
+import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/auth/auth.dart';
+import 'package:yts_mobile/feature/movies/movies.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -15,6 +16,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => FadeTransitionPage(
           key: state.pageKey,
           child: const SplashScreen(),
+        ),
+        redirect: (_, __) => RoutePaths.randomPhotos.path,
+      ),
+      GoRoute(
+        path: RoutePaths.randomPhotos.path,
+        name: RoutePaths.randomPhotos.routeName,
+        pageBuilder: (context, state) => FadeTransitionPage(
+          key: state.pageKey,
+          child: const RandomPhotosPage(),
         ),
       ),
     ],
