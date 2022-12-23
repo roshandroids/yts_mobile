@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "582115471020",
+    "project_id": "yts-mobile-5c23e",
+    "storage_bucket": "yts-mobile-5c23e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582115471020:android:a45ec6e8a12dcce39d7909",
+        "android_client_info": {
+          "package_name": "com.yts.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582115471020-dtq09e6nmblfa79pd20mfk3jto55klt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNNuZL85H0EebWbVH3ihcRGkHBBaeDHZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582115471020-dtq09e6nmblfa79pd20mfk3jto55klt4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
