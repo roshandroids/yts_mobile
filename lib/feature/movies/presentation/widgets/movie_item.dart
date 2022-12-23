@@ -11,7 +11,6 @@ class MovieItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final movieAsync = ref.watch(currentMovieItemProvider);
-
     return Container(
       child: movieAsync.when(
         data: (MovieModel movie) {

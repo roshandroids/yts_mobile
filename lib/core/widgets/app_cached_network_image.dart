@@ -74,6 +74,11 @@ class AppCachedNetworkImage extends StatelessWidget {
     final memCacheWidth = width != null ? (width! * 2).ceil() : null;
     return RepaintBoundary(
       child: CachedNetworkImage(
+        httpHeaders: const {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,HEAD,POST,OPTIONS',
+          'Access-Control-Max-Age': '86400',
+        },
         placeholder: noLoader
             ? null
             : (_, __) => Center(
