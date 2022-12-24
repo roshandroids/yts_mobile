@@ -36,21 +36,25 @@ class MoviesRepositoryImpl implements MoviesRepository {
     return parsedResponse;
   }
 
-  // @override
-  // Future<MovieModel> getMovieDetails(
-  //   String movieId, {
-  //   bool withImages = false,
-  //   bool withCast = false,
-  //   bool forceRefresh = false,
-  // }) async {
-  //   final responseData = await httpService.get(
-  //     Endpoints.latestMoviesEndpoint,
-  //     forceRefresh: forceRefresh,
-  //     queryParameters: <String, dynamic>{
-  //       'movie_id': movieId,
-  //       'with_images': withImages,
-  //       'with_cast': withCast,
-  //     },
-  //   );
-  // }
+  @override
+  Future<MovieModel> getMovieDetails(
+    int movieId, {
+    bool withImages = false,
+    bool withCast = false,
+    bool forceRefresh = false,
+  }) async {
+    final responseData = await httpService.get(
+      Endpoints.movieDetailsEndpoint,
+      forceRefresh: forceRefresh,
+      queryParameters: <String, dynamic>{
+        'movie_id': movieId,
+        'with_images': withImages,
+        'with_cast': withCast,
+      },
+    );
+    return MovieModel.fromJson(
+      (responseData['data'] as Map<String, dynamic>)['movie']
+          as Map<String, dynamic>,
+    );
+  }
 }

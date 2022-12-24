@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 
-class MovieItem extends ConsumerWidget {
-  const MovieItem({super.key});
+class GridMovieItem extends ConsumerWidget {
+  const GridMovieItem({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final movieAsync = ref.watch(currentMovieItemProvider);
@@ -32,7 +32,7 @@ class MovieItem extends ConsumerWidget {
                 params: {
                   'id': '${movie.id}',
                 },
-                extra: movie,
+                extra: movie.largeCoverImage,
               );
             },
             child: DecoratedBox(
@@ -94,7 +94,7 @@ class MovieItem extends ConsumerWidget {
           );
         },
         error: (Object error, StackTrace? stackTrace) {
-          log('Error fetching current popular person');
+          log('Error fetching current movie item');
           log(error.toString());
           return const ErrorView();
         },
