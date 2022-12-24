@@ -9,7 +9,9 @@ void main() {
       final provider = ProviderContainer();
       addTearDown(provider.dispose);
       expect(
-          provider.read(moviesRepositoryProvider), isA<MoviesRepositoryImpl>());
+        provider.read(moviesRepositoryProvider),
+        isA<MoviesRepositoryImpl>(),
+      );
     },
   );
 }
