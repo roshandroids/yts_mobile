@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 
@@ -17,19 +18,24 @@ class MovieDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final movieAsync = ref.watch(movieDetailsProvider(movieId));
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: MediaQuery.of(context).size.height * 0.4,
-            backgroundColor: Colors.transparent,
+            expandedHeight: MediaQuery.of(context).size.height * 0.5,
             leading: const AdaptiveBackBtn(),
             pinned: true,
             flexibleSpace: Hero(
               tag: 'movie_${movieId}_cover_image',
               transitionOnUserGestures: true,
-              child: AppCachedNetworkImage(
-                imageUrl: imgCoverUrl!,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  AppCachedNetworkImage(
+                    imageUrl: imgCoverUrl!,
+                  ),
+                ],
               ),
             ),
           ),
@@ -38,8 +44,141 @@ class MovieDetailPage extends ConsumerWidget {
               [
                 movieAsync.when(
                   data: (MovieModel movie) {
-                    return Center(
-                      child: Text(movie.title),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            movie.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                Theme.of(context).textTheme.headline4?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                          ),
+                          Text(
+                            '${movie.year}',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                                Theme.of(context).textTheme.headline6?.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                          ),
+                          Text(
+                            movie.genres.getGenresString,
+                            style:
+                                Theme.of(context).textTheme.bodyText1?.copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Available in :'.hardcoded,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w500,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                              ),
+                              const SizedBox(width: 5),
+                              Wrap(
+                                children: movie.torrents
+                                    .map(
+                                      (e) => MovieQualityLabel(
+                                        quality: e.quality,
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: size.width / 3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.favorite_outline_rounded,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      movie.likeCount.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                    ),
+                                    const Spacer(),
+                                    const SizedBox(width: 10)
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(AppAssets.imdbLogo),
+                                    const Spacer(),
+                                    Text(
+                                      '${movie.rating} ⭐️',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                    ),
+                                    const Spacer(),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Summary :'.hardcoded,
+                            style:
+                                Theme.of(context).textTheme.bodyText1?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                          ),
+                          Text(
+                            movie.descriptionFull,
+                            maxLines: 50,
+                            textAlign: TextAlign.justify,
+                            style:
+                                Theme.of(context).textTheme.bodyText2?.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
                     );
                   },
                   error: (Object error, StackTrace? stackTrace) {
@@ -47,7 +186,9 @@ class MovieDetailPage extends ConsumerWidget {
                     log(error.toString());
                     return const ErrorView();
                   },
-                  loading: Shimmer.new,
+                  loading: () => CustomShimmer(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                  ),
                 ),
               ],
             ),
@@ -56,18 +197,8 @@ class MovieDetailPage extends ConsumerWidget {
       ),
     );
   }
+}
 
-  MovieDetailPage copyWith({
-    int? movieId,
-  }) {
-    return MovieDetailPage(
-      movieId: movieId ?? this.movieId,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'movieId': movieId,
-    };
-  }
+extension GetGenresString on List<String> {
+  String get getGenresString => join(' / ');
 }

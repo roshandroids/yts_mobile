@@ -17,7 +17,7 @@ class ListItemShimmer extends StatelessWidget {
         crossAxisSpacing: 4,
         mainAxisSpacing: 8,
       ),
-      itemBuilder: (context, index) => Shimmer(
+      itemBuilder: (context, index) => CustomShimmer(
         width: MediaQuery.of(context).size.width,
       ),
     );

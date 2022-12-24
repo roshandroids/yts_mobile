@@ -32,7 +32,7 @@ void main() {
     'large_cover_image':
         'https://yts.mx/assets/images/movies/the_bargain_2021/large-cover.jpg',
     'state': 'ok',
-    'torrents': [],
+    'torrents': <String>[],
     'date_uploaded': '2022-12-24 01:27:50',
     'date_uploaded_unix': 1671841670
   };
