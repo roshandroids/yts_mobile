@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
-import 'package:yts_mobile/feature/movies/presentation/widgets/grid_movie_item.dart';
 
 class LatestMoviesGridView extends ConsumerWidget {
   const LatestMoviesGridView({super.key});
@@ -12,6 +11,7 @@ class LatestMoviesGridView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final randomPhotosCount = ref.watch(moviesCountProvider);
     final scrollController = ref.watch(moviesScrollControllerProvider);
+
     return randomPhotosCount.when(
       loading: ListItemShimmer.new,
       data: (int count) {
@@ -25,7 +25,7 @@ class LatestMoviesGridView extends ConsumerWidget {
             childAspectRatio: 6 / 9,
           ),
           itemBuilder: (context, index) {
-            final currentPhotoFromIndex = ref
+            final currentMovieFromIndex = ref
                 .watch(paginatedMoviesProvider(index ~/ 20))
                 .whenData((pageData) {
               return pageData.results[index % 20];
@@ -33,7 +33,7 @@ class LatestMoviesGridView extends ConsumerWidget {
             return ProviderScope(
               overrides: [
                 currentMovieItemProvider
-                    .overrideWithValue(currentPhotoFromIndex)
+                    .overrideWithValue(currentMovieFromIndex)
               ],
               child: const GridMovieItem(),
             );

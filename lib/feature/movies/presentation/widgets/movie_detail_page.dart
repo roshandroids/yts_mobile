@@ -18,6 +18,7 @@ class MovieDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final movieAsync = ref.watch(movieDetailsProvider(movieId));
+    final suggestedMoviesAsync = ref.watch(suggestedMoviesProvider(movieId));
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: CustomScrollView(
@@ -177,6 +178,47 @@ class MovieDetailPage extends ConsumerWidget {
                                     ),
                           ),
                           const SizedBox(height: 10),
+                          SizedBox(
+                            height: size.height / 5,
+                            child: suggestedMoviesAsync.when(
+                              data: (PaginatedResponse<MovieModel> data) {
+                                return ListView.builder(
+                                  itemExtent: size.width / 2,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    final currentMovieFromIndex = ref
+                                        .watch(suggestedMoviesProvider(index))
+                                        .whenData((pageData) {
+                                      return pageData.results[index];
+                                    });
+                                    return ProviderScope(
+                                      overrides: [
+                                        currentMovieItemProvider
+                                            .overrideWithValue(
+                                          currentMovieFromIndex,
+                                        )
+                                      ],
+                                      child: const GridMovieItem(),
+                                    );
+                                  },
+                                );
+                              },
+                              error: (error, stackTrace) {
+                                log('Error fetching movie details');
+                                log(error.toString());
+                                return const SizedBox.shrink();
+                              },
+                              loading: () => ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 5,
+                                itemBuilder: (context, index) => CustomShimmer(
+                                  width: size.width / 3,
+                                  height: 100,
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     );

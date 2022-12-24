@@ -57,4 +57,33 @@ class MoviesRepositoryImpl implements MoviesRepository {
           as Map<String, dynamic>,
     );
   }
+
+  @override
+  Future<PaginatedResponse<MovieModel>> getSuggestedMovies(
+    int movieId, {
+    bool forceRefresh = false,
+  }) async {
+    final responseData = await httpService.get(
+      Endpoints.suggestedMoviesEndpoint,
+      forceRefresh: forceRefresh,
+      queryParameters: <String, dynamic>{
+        'movie_id': movieId,
+      },
+    );
+    final responseJson = responseData['data'] as Map<String, dynamic>;
+    final additionalParams = <String, dynamic>{
+      'page_number': 0,
+      'limit': 20,
+    };
+    responseJson.addAll(additionalParams);
+    final parsedResponse = PaginatedResponse.fromJson(
+      responseJson,
+      results: List<MovieModel>.from(
+        (responseJson['movies'] as List<dynamic>)
+            .map((e) => MovieModel.fromJson(e as Map<String, dynamic>)),
+      ),
+    );
+
+    return parsedResponse;
+  }
 }

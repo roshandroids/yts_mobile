@@ -12,7 +12,6 @@ class GridMovieItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final movieAsync = ref.watch(currentMovieItemProvider);
     final size = MediaQuery.of(context).size;
-
     return Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
@@ -47,7 +46,7 @@ class GridMovieItem extends ConsumerWidget {
                     child: Hero(
                       tag: 'movie_${movie.id}_cover_image',
                       child: AppCachedNetworkImage(
-                        width: size.width,
+                        width: size.width / 2,
                         imageUrl: movie.mediumCoverImage,
                         fit: BoxFit.cover,
                       ),
