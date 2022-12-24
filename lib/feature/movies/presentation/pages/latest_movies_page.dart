@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 
-class RandomPhotosPage extends ConsumerWidget {
-  const RandomPhotosPage({super.key});
+class LatestMoviesPage extends ConsumerWidget {
+  const LatestMoviesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +23,7 @@ class RandomPhotosPage extends ConsumerWidget {
           ),
         ),
       ),
-      body: const MoviesList(),
+      body: const LatestMoviesList(),
     );
   }
 }

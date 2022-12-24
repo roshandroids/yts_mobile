@@ -17,14 +17,22 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           key: state.pageKey,
           child: const SplashScreen(),
         ),
-        redirect: (_, __) => RoutePaths.randomPhotos.path,
+        redirect: (_, __) => RoutePaths.latestMovies.path,
       ),
       GoRoute(
-        path: RoutePaths.randomPhotos.path,
-        name: RoutePaths.randomPhotos.routeName,
+        path: RoutePaths.latestMovies.path,
+        name: RoutePaths.latestMovies.routeName,
         pageBuilder: (context, state) => FadeTransitionPage(
           key: state.pageKey,
-          child: const RandomPhotosPage(),
+          child: const LatestMoviesPage(),
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.movieDetail.path,
+        name: RoutePaths.movieDetail.routeName,
+        pageBuilder: (context, state) => FadeTransitionPage(
+          key: state.pageKey,
+          child: const MovieDetail(),
         ),
       ),
     ],

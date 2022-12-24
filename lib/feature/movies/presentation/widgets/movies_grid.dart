@@ -5,8 +5,8 @@ import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 import 'package:yts_mobile/feature/movies/presentation/widgets/movie_item.dart';
 
-class MoviesList extends ConsumerWidget {
-  const MoviesList({super.key});
+class LatestMoviesList extends ConsumerWidget {
+  const LatestMoviesList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,11 +16,12 @@ class MoviesList extends ConsumerWidget {
       loading: ListItemShimmer.new,
       data: (int count) {
         return GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           controller: scrollController,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 8,
+            crossAxisSpacing: 4,
+            mainAxisExtent: 250,
             mainAxisSpacing: 8,
           ),
           itemBuilder: (context, index) {
