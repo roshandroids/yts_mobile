@@ -26,4 +26,9 @@ abstract class MoviesRepository {
     bool withCast = false,
     bool forceRefresh = false,
   });
+
+  Future<PaginatedResponse<MovieModel>> getSuggestedMovies(
+    int movieId, {
+    bool forceRefresh = false,
+  });
 }

@@ -3,3 +3,4 @@ export 'movie_details_provider.dart';
 export 'movies_count_provider.dart';
 export 'movies_grid_scroll_controller_provider.dart';
 export 'paginated_movies_provider.dart';
+export 'suggested_movies_provider.dart';
