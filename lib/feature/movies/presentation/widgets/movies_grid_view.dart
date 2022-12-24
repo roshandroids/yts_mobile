@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
-import 'package:yts_mobile/feature/movies/presentation/widgets/movie_item.dart';
+import 'package:yts_mobile/feature/movies/presentation/widgets/grid_movie_item.dart';
 
 class LatestMoviesGridView extends ConsumerWidget {
   const LatestMoviesGridView({super.key});
@@ -35,7 +35,7 @@ class LatestMoviesGridView extends ConsumerWidget {
                 currentMovieItemProvider
                     .overrideWithValue(currentPhotoFromIndex)
               ],
-              child: const MovieItem(),
+              child: const GridMovieItem(),
             );
           },
         );
