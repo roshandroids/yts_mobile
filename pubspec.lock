@@ -750,7 +750,7 @@ packages:
     source: hosted
     version: "2.4.0+2"
   stack_trace:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stack_trace
       url: "https://pub.dartlang.org"

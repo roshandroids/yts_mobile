@@ -7,7 +7,7 @@ class RoutePaths {
   static final AppRouteModel latestMovies =
       AppRouteModel(routeName: 'latestMovies', path: '/latestMovies');
   static final AppRouteModel movieDetail =
-      AppRouteModel(routeName: 'movieDetail', path: '/movieDetail');
+      AppRouteModel(routeName: 'movieDetail', path: '/movieDetail/:id');
   static final AppRouteModel errorRoute =
       AppRouteModel(routeName: 'error', path: '/error');
 }
