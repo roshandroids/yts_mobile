@@ -56,7 +56,7 @@ class _ShimmerState extends State<Shimmer> with SingleTickerProviderStateMixin {
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-          color: Theme.of(context).appBarTheme.backgroundColor,
+          color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(10),
         ),
       ),

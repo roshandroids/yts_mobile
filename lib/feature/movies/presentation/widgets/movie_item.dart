@@ -17,8 +17,8 @@ class MovieItem extends ConsumerWidget {
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         border: Border.all(
-          width: 3,
-          color: Theme.of(context).backgroundColor,
+          width: 1.5,
+          color: Theme.of(context).dividerColor,
         ),
         borderRadius: BorderRadius.circular(4),
       ),
@@ -32,6 +32,7 @@ class MovieItem extends ConsumerWidget {
                 params: {
                   'id': '${movie.id}',
                 },
+                extra: movie,
               );
             },
             child: DecoratedBox(
@@ -43,10 +44,13 @@ class MovieItem extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: AppCachedNetworkImage(
-                      width: size.width,
-                      imageUrl: movie.mediumCoverImage,
-                      fit: BoxFit.cover,
+                    child: Hero(
+                      tag: 'movie_${movie.id}_cover_image',
+                      child: AppCachedNetworkImage(
+                        width: size.width,
+                        imageUrl: movie.mediumCoverImage,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   RichText(
@@ -94,7 +98,7 @@ class MovieItem extends ConsumerWidget {
           log(error.toString());
           return const ErrorView();
         },
-        loading: () => const ListItemShimmer(),
+        loading: Shimmer.new,
       ),
     );
   }
@@ -111,7 +115,7 @@ class MovieQualityLabel extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).dividerColor,
       ),
       child: Text(
         quality,

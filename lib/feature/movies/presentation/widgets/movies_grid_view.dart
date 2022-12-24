@@ -5,8 +5,8 @@ import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 import 'package:yts_mobile/feature/movies/presentation/widgets/movie_item.dart';
 
-class LatestMoviesList extends ConsumerWidget {
-  const LatestMoviesList({super.key});
+class LatestMoviesGridView extends ConsumerWidget {
+  const LatestMoviesGridView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,8 +21,8 @@ class LatestMoviesList extends ConsumerWidget {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 4,
-            mainAxisExtent: 250,
             mainAxisSpacing: 8,
+            childAspectRatio: 6 / 9,
           ),
           itemBuilder: (context, index) {
             final currentPhotoFromIndex = ref
