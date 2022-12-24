@@ -11,3 +11,4 @@ linter:
     sort_pub_dependencies: false
     public_member_api_docs: false
     non_constant_identifier_names: false
+    no_default_cases: false

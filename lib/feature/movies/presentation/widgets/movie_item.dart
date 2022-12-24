@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 
@@ -24,57 +25,67 @@ class MovieItem extends ConsumerWidget {
       child: movieAsync.when(
         data: (MovieModel movie) {
           final qualityList = movie.torrents.map((e) => e.quality).toList();
-          return DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: AppCachedNetworkImage(
-                    width: size.width,
-                    imageUrl: movie.mediumCoverImage,
-                    fit: BoxFit.cover,
+          return InkWell(
+            onTap: () {
+              context.pushNamed(
+                RoutePaths.movieDetail.routeName,
+                params: {
+                  'id': '${movie.id}',
+                },
+              );
+            },
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: AppCachedNetworkImage(
+                      width: size.width,
+                      imageUrl: movie.mediumCoverImage,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                RichText(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
+                  RichText(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                      children: [
+                        TextSpan(
+                          text: '[${movie.language.toUpperCase()}] ',
+                        ),
+                        TextSpan(
+                          text: movie.titleEnglish,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    '${movie.year}',
                     style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           overflow: TextOverflow.ellipsis,
                         ),
-                    children: [
-                      TextSpan(
-                        text: '[${movie.language.toUpperCase()}] ',
-                      ),
-                      TextSpan(
-                        text: movie.titleEnglish,
-                      ),
-                    ],
                   ),
-                ),
-                Text(
-                  '${movie.year}',
-                  style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                ),
-                Row(
-                  children: qualityList
-                      .map(
-                        (e) => MovieQualityLabel(
-                          quality: e,
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
+                  Row(
+                    children: qualityList
+                        .map(
+                          (e) => MovieQualityLabel(
+                            quality: e,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              ),
             ),
           );
         },
