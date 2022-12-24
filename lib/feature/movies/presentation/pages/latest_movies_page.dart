@@ -9,10 +9,13 @@ class LatestMoviesPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scrollControllerProvider = ref.watch(moviesScrollControllerProvider);
+    final isDarkTheme = ref.watch(themeProvider).isDarkTheme;
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         leading: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.only(left: 8),
           child: GestureDetector(
             onTap: () => scrollControllerProvider.animateTo(
               scrollControllerProvider.position.minScrollExtent,
@@ -22,8 +25,18 @@ class LatestMoviesPage extends ConsumerWidget {
             child: Image.asset(AppAssets.appLogo),
           ),
         ),
+        actions: [
+          Switch.adaptive(
+            value: isDarkTheme,
+            onChanged: (isDarkModeEnabled) {
+              ref.read(themeProvider.notifier).updateCurrentThemeMode(
+                    isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+                  );
+            },
+          ),
+        ],
       ),
-      body: const LatestMoviesList(),
+      body: const LatestMoviesGridView(),
     );
   }
 }

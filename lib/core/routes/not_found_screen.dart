@@ -21,7 +21,7 @@ class NotFoundScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '404 - Page not found!',
+                  '404 - Page not found!'.hardcoded,
                   style: Theme.of(context).textTheme.headline4,
                   textAlign: TextAlign.center,
                 ),

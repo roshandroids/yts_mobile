@@ -8,9 +8,18 @@ class ListItemShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer(
-      height: 15,
-      width: MediaQuery.of(context).size.width * 0.4,
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: 10,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 4,
+        mainAxisSpacing: 8,
+      ),
+      itemBuilder: (context, index) => Shimmer(
+        width: MediaQuery.of(context).size.width,
+      ),
     );
   }
 }

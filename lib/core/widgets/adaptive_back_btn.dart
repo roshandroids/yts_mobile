@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AdaptiveBackBtn extends StatelessWidget {
   const AdaptiveBackBtn({
@@ -9,12 +10,19 @@ class AdaptiveBackBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(
-        Icons.chevron_left,
-        size: 30,
+    return GestureDetector(
+      onTap: onPressed ?? () => context.pop(),
+      child: Container(
+        padding: EdgeInsets.zero,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          // color: Theme.of(context).backgroundColor,
+        ),
+        child: const Icon(
+          Icons.chevron_left,
+          size: 30,
+        ),
       ),
-      onPressed: onPressed ?? () => Navigator.pop(context),
     );
   }
 }

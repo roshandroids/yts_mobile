@@ -15,6 +15,7 @@ import 'package:yts_mobile/firebase_options.dart';
 void main() {
   runZonedGuarded<Future<void>>(
     () async {
+      WidgetsFlutterBinding.ensureInitialized();
       setUrlStrategy(PathUrlStrategy());
 
       await Firebase.initializeApp(
