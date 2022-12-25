@@ -67,7 +67,7 @@ jobs:
 
   app-distribution-android:
     executor:
-      name: android/android-machine
+      name: android
     steps:
       - checkout
       - install-flutter
