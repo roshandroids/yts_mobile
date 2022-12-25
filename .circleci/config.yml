@@ -73,8 +73,8 @@ jobs:
 workflows:
   main:
     jobs:
-      - setup-and-format:
-      - tests:
+      - setup-and-format
+      - tests
       - build-android:
           requires:
             - setup-and-format
