@@ -61,6 +61,18 @@ jobs:
       - checkout
       - install-flutter
       - build-android
+    - store_artifacts:
+          path: ~/build/app/outputs/flutter-apk/app-develop-debug.apk
+          destination: android.apk
+
+  app-distribution-android:
+    executor:
+      name: android/android-machine
+    steps:
+      - checkout
+      - install-flutter
+      - run: cd ~/android && bundle exec fastlane deploy_develop_to_firebase
+
   tests:
     executor: android
     steps:
@@ -79,3 +91,17 @@ workflows:
           requires:
             - setup-and-format
             - tests
+
+  development-phase:
+    jobs:
+      - setup-and-format
+      - build-android:
+          requires:
+            - setup-and-format
+      - app-distribution-approval:
+          type: approval
+          requires:
+            - setup-and-format
+      - app-distribution-android:
+          requires:
+            - app-distribution-approval
