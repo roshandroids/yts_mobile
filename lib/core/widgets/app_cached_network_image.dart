@@ -37,7 +37,7 @@ class AppCachedNetworkImage extends StatelessWidget {
 
   /// An optional custom loader widget
   ///
-  /// Defaults to a [Shimmer] widget if [isLoaderShimmer] is true
+  /// Defaults to a [CustomShimmer] widget if [isLoaderShimmer] is true
   /// Defaults to a [AppLoader] widget if [isLoaderShimmer] is false
   final Widget? loaderWidget;
 
@@ -64,7 +64,7 @@ class AppCachedNetworkImage extends StatelessWidget {
 
   /// Indicates what loading widget to render
   ///
-  /// [AppLoader] or [Shimmer]
+  /// [AppLoader] or [CustomShimmer]
   /// Defaults to true
   final bool isLoaderShimmer;
 
@@ -84,7 +84,7 @@ class AppCachedNetworkImage extends StatelessWidget {
             : (_, __) => Center(
                   child: loaderWidget ??
                       (isLoaderShimmer
-                          ? Shimmer(
+                          ? CustomShimmer(
                               height: height,
                               width: width,
                             )

@@ -1,3 +1,5 @@
 export 'pages/latest_movies_page.dart';
-export 'pages/movie_detail.dart';
-export 'widgets/movies_grid.dart';
+export 'widgets/grid_movie_item.dart';
+export 'widgets/movie_detail_page.dart';
+export 'widgets/movie_quality_lable.dart';
+export 'widgets/movies_grid_view.dart';

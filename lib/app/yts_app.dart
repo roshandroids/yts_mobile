@@ -10,12 +10,13 @@ class YtsApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
+    final themeData = ref.watch(themeProvider);
     return MaterialApp.router(
       title: 'Yts Movies App',
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      darkTheme: AppTheme.darkTheme,
-      theme: AppTheme.lightTheme,
+      themeMode: themeData.getCurrentThemeMode,
+      theme: themeData.getLightThemeData,
+      darkTheme: themeData.getDarkThemeData,
       routeInformationParser: goRouter.routeInformationParser,
       routeInformationProvider: goRouter.routeInformationProvider,
       routerDelegate: goRouter.routerDelegate,

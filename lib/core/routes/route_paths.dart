@@ -5,9 +5,9 @@ class RoutePaths {
   static final AppRouteModel splashRoute =
       AppRouteModel(routeName: 'splashPage', path: '/splashPage');
   static final AppRouteModel latestMovies =
-      AppRouteModel(routeName: 'latestMovies', path: '/latestMovies');
+      AppRouteModel(routeName: 'latest', path: '/latest');
   static final AppRouteModel movieDetail =
-      AppRouteModel(routeName: 'movieDetail', path: '/movieDetail/:id');
+      AppRouteModel(routeName: 'details', path: ':id');
   static final AppRouteModel errorRoute =
       AppRouteModel(routeName: 'error', path: '/error');
 }

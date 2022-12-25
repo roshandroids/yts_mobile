@@ -22,7 +22,10 @@ _$_MovieModel _$$_MovieModelFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const <String>[],
+      downloadCount: json['download_count'] as int? ?? 0,
+      likeCount: json['like_count'] as int? ?? 0,
       summary: json['summary'] as String? ?? '',
+      descriptionIntro: json['description_intro'] as String? ?? '',
       descriptionFull: json['description_full'] as String? ?? '',
       synopsis: json['synopsis'] as String? ?? '',
       ytTrailerCode: json['yt_trailer_code'] as String? ?? '',
@@ -39,9 +42,7 @@ _$_MovieModel _$$_MovieModelFromJson(Map<String, dynamic> json) =>
               ?.map((e) => Torrent.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <Torrent>[],
-      dateUploaded: json['date_uploaded'] == null
-          ? null
-          : DateTime.parse(json['date_uploaded'] as String),
+      dateUploaded: json['date_uploaded'] as String?,
       dateUploadedUnix: json['date_uploaded_unix'] as int?,
     );
 
@@ -58,7 +59,10 @@ Map<String, dynamic> _$$_MovieModelToJson(_$_MovieModel instance) =>
       'rating': instance.rating,
       'runtime': instance.runtime,
       'genres': instance.genres,
+      'download_count': instance.downloadCount,
+      'like_count': instance.likeCount,
       'summary': instance.summary,
+      'description_intro': instance.descriptionIntro,
       'description_full': instance.descriptionFull,
       'synopsis': instance.synopsis,
       'yt_trailer_code': instance.ytTrailerCode,
@@ -71,7 +75,7 @@ Map<String, dynamic> _$$_MovieModelToJson(_$_MovieModel instance) =>
       'large_cover_image': instance.largeCoverImage,
       'state': instance.state,
       'torrents': instance.torrents,
-      'date_uploaded': instance.dateUploaded?.toIso8601String(),
+      'date_uploaded': instance.dateUploaded,
       'date_uploaded_unix': instance.dateUploadedUnix,
     };
 
@@ -84,9 +88,7 @@ _$_Torrent _$$_TorrentFromJson(Map<String, dynamic> json) => _$_Torrent(
       peers: json['peers'] as int? ?? 0,
       size: json['size'] as String? ?? '',
       sizeBytes: json['size_bytes'] as int? ?? 0,
-      dateUploaded: json['date_uploaded'] == null
-          ? null
-          : DateTime.parse(json['date_uploaded'] as String),
+      dateUploaded: json['date_uploaded'] as String?,
       dateUploadedUnix: json['date_uploaded_unix'] as int?,
     );
 
@@ -100,6 +102,6 @@ Map<String, dynamic> _$$_TorrentToJson(_$_Torrent instance) =>
       'peers': instance.peers,
       'size': instance.size,
       'size_bytes': instance.sizeBytes,
-      'date_uploaded': instance.dateUploaded?.toIso8601String(),
+      'date_uploaded': instance.dateUploaded,
       'date_uploaded_unix': instance.dateUploadedUnix,
     };

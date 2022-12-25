@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:yts_mobile/core/core.dart';
 
@@ -39,46 +40,52 @@ class DioHttpService implements HttpService {
   };
 
   @override
-  Future<Map<String, dynamic>> get(
+  Future<Either<Map<String, dynamic>, Failure>> get(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
     bool forceRefresh = false,
     String? customBaseUrl,
+    CancelToken? cancelToken,
   }) async {
-    dio.options.extra[AppConfigs.dioCacheForceRefreshKey] = forceRefresh;
+    try {
+      dio.options.extra[AppConfigs.dioCacheForceRefreshKey] = forceRefresh;
 
-    final Response<dynamic> response = await dio.get<Map<String, dynamic>>(
-      endpoint,
-      queryParameters: queryParameters,
-    );
-    if (response.data == null || response.statusCode != 200) {
-      throw HttpException(
-        title: 'Http Error!',
-        statusCode: response.statusCode,
-        message: response.statusMessage,
+      final Response<dynamic> response = await dio.get<Map<String, dynamic>>(
+        endpoint,
+        queryParameters: queryParameters,
       );
+      return Left(response.data as Map<String, dynamic>);
+    } on DioError catch (e) {
+      return Right(e.toFailure);
+    } catch (e) {
+      return Right(Failure.fromException(e));
     }
-
-    return response.data as Map<String, dynamic>;
   }
 
   @override
-  Future<Map<String, dynamic>> post(
+  Future<Either<Map<String, dynamic>, Failure>> post(
     String endpoint, {
     Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
   }) async {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  Future<Map<String, dynamic>> delete(String endpoint) {
+  Future<Either<Map<String, dynamic>, Failure>> delete(
+    String endpoint, {
+    CancelToken? cancelToken,
+  }) {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  Future<Map<String, dynamic>> put(String endpoint) {
+  Future<Either<Map<String, dynamic>, Failure>> put(
+    String endpoint, {
+    CancelToken? cancelToken,
+  }) {
     // TODO: implement put
     throw UnimplementedError();
   }

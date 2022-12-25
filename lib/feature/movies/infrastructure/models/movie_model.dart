@@ -17,7 +17,10 @@ abstract class MovieModel with _$MovieModel {
     @JsonKey(name: 'rating') @Default(0.0) double rating,
     @JsonKey(name: 'runtime') @Default(0) int runtime,
     @JsonKey(name: 'genres') @Default(<String>[]) List<String> genres,
+    @JsonKey(name: 'download_count') @Default(0) int downloadCount,
+    @JsonKey(name: 'like_count') @Default(0) int likeCount,
     @JsonKey(name: 'summary') @Default('') String summary,
+    @JsonKey(name: 'description_intro') @Default('') String descriptionIntro,
     @JsonKey(name: 'description_full') @Default('') String descriptionFull,
     @JsonKey(name: 'synopsis') @Default('') String synopsis,
     @JsonKey(name: 'yt_trailer_code') @Default('') String ytTrailerCode,
@@ -32,7 +35,7 @@ abstract class MovieModel with _$MovieModel {
     @JsonKey(name: 'large_cover_image') @Default('') String largeCoverImage,
     @JsonKey(name: 'state') @Default('') String state,
     @JsonKey(name: 'torrents') @Default(<Torrent>[]) List<Torrent> torrents,
-    @JsonKey(name: 'date_uploaded') DateTime? dateUploaded,
+    @JsonKey(name: 'date_uploaded') String? dateUploaded,
     @JsonKey(name: 'date_uploaded_unix') int? dateUploadedUnix,
   }) = _MovieModel;
 
@@ -51,7 +54,7 @@ abstract class Torrent with _$Torrent {
     @JsonKey(name: 'peers') @Default(0) int peers,
     @JsonKey(name: 'size') @Default('') String size,
     @JsonKey(name: 'size_bytes') @Default(0) int sizeBytes,
-    @JsonKey(name: 'date_uploaded') DateTime? dateUploaded,
+    @JsonKey(name: 'date_uploaded') String? dateUploaded,
     @JsonKey(name: 'date_uploaded_unix') int? dateUploadedUnix,
   }) = _Torrent;
 

@@ -1,64 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
-/// Shimmer widget with simple fade animation
-class Shimmer extends StatefulWidget {
-  /// Creates a new instance of [Shimmer]
-  const Shimmer({
+/// CustomShimmer widget with simple fade animation
+class CustomShimmer extends StatelessWidget {
+  /// Creates a new instance of [CustomShimmer]
+  const CustomShimmer({
     super.key,
     this.width,
     this.height,
-    this.minOpacity = 0.05,
-    this.maxOpacity = 0.1,
   });
 
-  /// Shimmer area width
+  /// CustomShimmer area width
   final double? width;
 
-  /// Shimmer area height
+  /// CustomShimmer area height
   final double? height;
-
-  /// Shimmer fade minimum opacity
-  final double minOpacity;
-
-  /// Shimmer fade maximum opacity
-  final double maxOpacity;
-
-  @override
-  State<Shimmer> createState() => _ShimmerState();
-}
-
-class _ShimmerState extends State<Shimmer> with SingleTickerProviderStateMixin {
-  late final AnimationController animationController;
-
-  @override
-  void initState() {
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-      lowerBound: widget.minOpacity,
-      upperBound: widget.maxOpacity,
-    );
-    animationController.repeat(reverse: true);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: animationController,
+    return Shimmer.fromColors(
+      baseColor: Theme.of(context).colorScheme.primaryContainer,
+      highlightColor: Theme.of(context).colorScheme.tertiaryContainer,
       child: Container(
-        width: widget.width,
-        height: widget.height,
+        margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
         decoration: BoxDecoration(
-          color: Theme.of(context).appBarTheme.backgroundColor,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(4),
+          color: Theme.of(context).backgroundColor,
         ),
+        height: height,
+        width: width,
       ),
     );
   }

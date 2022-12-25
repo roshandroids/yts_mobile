@@ -42,8 +42,14 @@ mixin _$MovieModel {
   int get runtime => throw _privateConstructorUsedError;
   @JsonKey(name: 'genres')
   List<String> get genres => throw _privateConstructorUsedError;
+  @JsonKey(name: 'download_count')
+  int get downloadCount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'like_count')
+  int get likeCount => throw _privateConstructorUsedError;
   @JsonKey(name: 'summary')
   String get summary => throw _privateConstructorUsedError;
+  @JsonKey(name: 'description_intro')
+  String get descriptionIntro => throw _privateConstructorUsedError;
   @JsonKey(name: 'description_full')
   String get descriptionFull => throw _privateConstructorUsedError;
   @JsonKey(name: 'synopsis')
@@ -69,7 +75,7 @@ mixin _$MovieModel {
   @JsonKey(name: 'torrents')
   List<Torrent> get torrents => throw _privateConstructorUsedError;
   @JsonKey(name: 'date_uploaded')
-  DateTime? get dateUploaded => throw _privateConstructorUsedError;
+  String? get dateUploaded => throw _privateConstructorUsedError;
   @JsonKey(name: 'date_uploaded_unix')
   int? get dateUploadedUnix => throw _privateConstructorUsedError;
 
@@ -108,8 +114,14 @@ abstract class $MovieModelCopyWith<$Res> {
           int runtime,
       @JsonKey(name: 'genres')
           List<String> genres,
+      @JsonKey(name: 'download_count')
+          int downloadCount,
+      @JsonKey(name: 'like_count')
+          int likeCount,
       @JsonKey(name: 'summary')
           String summary,
+      @JsonKey(name: 'description_intro')
+          String descriptionIntro,
       @JsonKey(name: 'description_full')
           String descriptionFull,
       @JsonKey(name: 'synopsis')
@@ -135,7 +147,7 @@ abstract class $MovieModelCopyWith<$Res> {
       @JsonKey(name: 'torrents')
           List<Torrent> torrents,
       @JsonKey(name: 'date_uploaded')
-          DateTime? dateUploaded,
+          String? dateUploaded,
       @JsonKey(name: 'date_uploaded_unix')
           int? dateUploadedUnix});
 }
@@ -164,7 +176,10 @@ class _$MovieModelCopyWithImpl<$Res, $Val extends MovieModel>
     Object? rating = null,
     Object? runtime = null,
     Object? genres = null,
+    Object? downloadCount = null,
+    Object? likeCount = null,
     Object? summary = null,
+    Object? descriptionIntro = null,
     Object? descriptionFull = null,
     Object? synopsis = null,
     Object? ytTrailerCode = null,
@@ -225,9 +240,21 @@ class _$MovieModelCopyWithImpl<$Res, $Val extends MovieModel>
           ? _value.genres
           : genres // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      downloadCount: null == downloadCount
+          ? _value.downloadCount
+          : downloadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      likeCount: null == likeCount
+          ? _value.likeCount
+          : likeCount // ignore: cast_nullable_to_non_nullable
+              as int,
       summary: null == summary
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptionIntro: null == descriptionIntro
+          ? _value.descriptionIntro
+          : descriptionIntro // ignore: cast_nullable_to_non_nullable
               as String,
       descriptionFull: null == descriptionFull
           ? _value.descriptionFull
@@ -280,7 +307,7 @@ class _$MovieModelCopyWithImpl<$Res, $Val extends MovieModel>
       dateUploaded: freezed == dateUploaded
           ? _value.dateUploaded
           : dateUploaded // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       dateUploadedUnix: freezed == dateUploadedUnix
           ? _value.dateUploadedUnix
           : dateUploadedUnix // ignore: cast_nullable_to_non_nullable
@@ -320,8 +347,14 @@ abstract class _$$_MovieModelCopyWith<$Res>
           int runtime,
       @JsonKey(name: 'genres')
           List<String> genres,
+      @JsonKey(name: 'download_count')
+          int downloadCount,
+      @JsonKey(name: 'like_count')
+          int likeCount,
       @JsonKey(name: 'summary')
           String summary,
+      @JsonKey(name: 'description_intro')
+          String descriptionIntro,
       @JsonKey(name: 'description_full')
           String descriptionFull,
       @JsonKey(name: 'synopsis')
@@ -347,7 +380,7 @@ abstract class _$$_MovieModelCopyWith<$Res>
       @JsonKey(name: 'torrents')
           List<Torrent> torrents,
       @JsonKey(name: 'date_uploaded')
-          DateTime? dateUploaded,
+          String? dateUploaded,
       @JsonKey(name: 'date_uploaded_unix')
           int? dateUploadedUnix});
 }
@@ -374,7 +407,10 @@ class __$$_MovieModelCopyWithImpl<$Res>
     Object? rating = null,
     Object? runtime = null,
     Object? genres = null,
+    Object? downloadCount = null,
+    Object? likeCount = null,
     Object? summary = null,
+    Object? descriptionIntro = null,
     Object? descriptionFull = null,
     Object? synopsis = null,
     Object? ytTrailerCode = null,
@@ -435,9 +471,21 @@ class __$$_MovieModelCopyWithImpl<$Res>
           ? _value._genres
           : genres // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      downloadCount: null == downloadCount
+          ? _value.downloadCount
+          : downloadCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      likeCount: null == likeCount
+          ? _value.likeCount
+          : likeCount // ignore: cast_nullable_to_non_nullable
+              as int,
       summary: null == summary
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptionIntro: null == descriptionIntro
+          ? _value.descriptionIntro
+          : descriptionIntro // ignore: cast_nullable_to_non_nullable
               as String,
       descriptionFull: null == descriptionFull
           ? _value.descriptionFull
@@ -490,7 +538,7 @@ class __$$_MovieModelCopyWithImpl<$Res>
       dateUploaded: freezed == dateUploaded
           ? _value.dateUploaded
           : dateUploaded // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       dateUploadedUnix: freezed == dateUploadedUnix
           ? _value.dateUploadedUnix
           : dateUploadedUnix // ignore: cast_nullable_to_non_nullable
@@ -525,8 +573,14 @@ class _$_MovieModel implements _MovieModel {
           this.runtime = 0,
       @JsonKey(name: 'genres')
           final List<String> genres = const <String>[],
+      @JsonKey(name: 'download_count')
+          this.downloadCount = 0,
+      @JsonKey(name: 'like_count')
+          this.likeCount = 0,
       @JsonKey(name: 'summary')
           this.summary = '',
+      @JsonKey(name: 'description_intro')
+          this.descriptionIntro = '',
       @JsonKey(name: 'description_full')
           this.descriptionFull = '',
       @JsonKey(name: 'synopsis')
@@ -600,8 +654,17 @@ class _$_MovieModel implements _MovieModel {
   }
 
   @override
+  @JsonKey(name: 'download_count')
+  final int downloadCount;
+  @override
+  @JsonKey(name: 'like_count')
+  final int likeCount;
+  @override
   @JsonKey(name: 'summary')
   final String summary;
+  @override
+  @JsonKey(name: 'description_intro')
+  final String descriptionIntro;
   @override
   @JsonKey(name: 'description_full')
   final String descriptionFull;
@@ -645,14 +708,14 @@ class _$_MovieModel implements _MovieModel {
 
   @override
   @JsonKey(name: 'date_uploaded')
-  final DateTime? dateUploaded;
+  final String? dateUploaded;
   @override
   @JsonKey(name: 'date_uploaded_unix')
   final int? dateUploadedUnix;
 
   @override
   String toString() {
-    return 'MovieModel(id: $id, url: $url, imdbCode: $imdbCode, title: $title, titleEnglish: $titleEnglish, titleLong: $titleLong, slug: $slug, year: $year, rating: $rating, runtime: $runtime, genres: $genres, summary: $summary, descriptionFull: $descriptionFull, synopsis: $synopsis, ytTrailerCode: $ytTrailerCode, language: $language, mpaRating: $mpaRating, backgroundImage: $backgroundImage, backgroundImageOriginal: $backgroundImageOriginal, smallCoverImage: $smallCoverImage, mediumCoverImage: $mediumCoverImage, largeCoverImage: $largeCoverImage, state: $state, torrents: $torrents, dateUploaded: $dateUploaded, dateUploadedUnix: $dateUploadedUnix)';
+    return 'MovieModel(id: $id, url: $url, imdbCode: $imdbCode, title: $title, titleEnglish: $titleEnglish, titleLong: $titleLong, slug: $slug, year: $year, rating: $rating, runtime: $runtime, genres: $genres, downloadCount: $downloadCount, likeCount: $likeCount, summary: $summary, descriptionIntro: $descriptionIntro, descriptionFull: $descriptionFull, synopsis: $synopsis, ytTrailerCode: $ytTrailerCode, language: $language, mpaRating: $mpaRating, backgroundImage: $backgroundImage, backgroundImageOriginal: $backgroundImageOriginal, smallCoverImage: $smallCoverImage, mediumCoverImage: $mediumCoverImage, largeCoverImage: $largeCoverImage, state: $state, torrents: $torrents, dateUploaded: $dateUploaded, dateUploadedUnix: $dateUploadedUnix)';
   }
 
   @override
@@ -674,7 +737,13 @@ class _$_MovieModel implements _MovieModel {
             (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.runtime, runtime) || other.runtime == runtime) &&
             const DeepCollectionEquality().equals(other._genres, _genres) &&
+            (identical(other.downloadCount, downloadCount) ||
+                other.downloadCount == downloadCount) &&
+            (identical(other.likeCount, likeCount) ||
+                other.likeCount == likeCount) &&
             (identical(other.summary, summary) || other.summary == summary) &&
+            (identical(other.descriptionIntro, descriptionIntro) ||
+                other.descriptionIntro == descriptionIntro) &&
             (identical(other.descriptionFull, descriptionFull) ||
                 other.descriptionFull == descriptionFull) &&
             (identical(other.synopsis, synopsis) ||
@@ -719,7 +788,10 @@ class _$_MovieModel implements _MovieModel {
         rating,
         runtime,
         const DeepCollectionEquality().hash(_genres),
+        downloadCount,
+        likeCount,
         summary,
+        descriptionIntro,
         descriptionFull,
         synopsis,
         ytTrailerCode,
@@ -774,8 +846,14 @@ abstract class _MovieModel implements MovieModel {
           final int runtime,
       @JsonKey(name: 'genres')
           final List<String> genres,
+      @JsonKey(name: 'download_count')
+          final int downloadCount,
+      @JsonKey(name: 'like_count')
+          final int likeCount,
       @JsonKey(name: 'summary')
           final String summary,
+      @JsonKey(name: 'description_intro')
+          final String descriptionIntro,
       @JsonKey(name: 'description_full')
           final String descriptionFull,
       @JsonKey(name: 'synopsis')
@@ -801,7 +879,7 @@ abstract class _MovieModel implements MovieModel {
       @JsonKey(name: 'torrents')
           final List<Torrent> torrents,
       @JsonKey(name: 'date_uploaded')
-          final DateTime? dateUploaded,
+          final String? dateUploaded,
       @JsonKey(name: 'date_uploaded_unix')
           final int? dateUploadedUnix}) = _$_MovieModel;
 
@@ -842,8 +920,17 @@ abstract class _MovieModel implements MovieModel {
   @JsonKey(name: 'genres')
   List<String> get genres;
   @override
+  @JsonKey(name: 'download_count')
+  int get downloadCount;
+  @override
+  @JsonKey(name: 'like_count')
+  int get likeCount;
+  @override
   @JsonKey(name: 'summary')
   String get summary;
+  @override
+  @JsonKey(name: 'description_intro')
+  String get descriptionIntro;
   @override
   @JsonKey(name: 'description_full')
   String get descriptionFull;
@@ -882,7 +969,7 @@ abstract class _MovieModel implements MovieModel {
   List<Torrent> get torrents;
   @override
   @JsonKey(name: 'date_uploaded')
-  DateTime? get dateUploaded;
+  String? get dateUploaded;
   @override
   @JsonKey(name: 'date_uploaded_unix')
   int? get dateUploadedUnix;
@@ -915,7 +1002,7 @@ mixin _$Torrent {
   @JsonKey(name: 'size_bytes')
   int get sizeBytes => throw _privateConstructorUsedError;
   @JsonKey(name: 'date_uploaded')
-  DateTime? get dateUploaded => throw _privateConstructorUsedError;
+  String? get dateUploaded => throw _privateConstructorUsedError;
   @JsonKey(name: 'date_uploaded_unix')
   int? get dateUploadedUnix => throw _privateConstructorUsedError;
 
@@ -938,7 +1025,7 @@ abstract class $TorrentCopyWith<$Res> {
       @JsonKey(name: 'peers') int peers,
       @JsonKey(name: 'size') String size,
       @JsonKey(name: 'size_bytes') int sizeBytes,
-      @JsonKey(name: 'date_uploaded') DateTime? dateUploaded,
+      @JsonKey(name: 'date_uploaded') String? dateUploaded,
       @JsonKey(name: 'date_uploaded_unix') int? dateUploadedUnix});
 }
 
@@ -1002,7 +1089,7 @@ class _$TorrentCopyWithImpl<$Res, $Val extends Torrent>
       dateUploaded: freezed == dateUploaded
           ? _value.dateUploaded
           : dateUploaded // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       dateUploadedUnix: freezed == dateUploadedUnix
           ? _value.dateUploadedUnix
           : dateUploadedUnix // ignore: cast_nullable_to_non_nullable
@@ -1027,7 +1114,7 @@ abstract class _$$_TorrentCopyWith<$Res> implements $TorrentCopyWith<$Res> {
       @JsonKey(name: 'peers') int peers,
       @JsonKey(name: 'size') String size,
       @JsonKey(name: 'size_bytes') int sizeBytes,
-      @JsonKey(name: 'date_uploaded') DateTime? dateUploaded,
+      @JsonKey(name: 'date_uploaded') String? dateUploaded,
       @JsonKey(name: 'date_uploaded_unix') int? dateUploadedUnix});
 }
 
@@ -1088,7 +1175,7 @@ class __$$_TorrentCopyWithImpl<$Res>
       dateUploaded: freezed == dateUploaded
           ? _value.dateUploaded
           : dateUploaded // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       dateUploadedUnix: freezed == dateUploadedUnix
           ? _value.dateUploadedUnix
           : dateUploadedUnix // ignore: cast_nullable_to_non_nullable
@@ -1141,7 +1228,7 @@ class _$_Torrent implements _Torrent {
   final int sizeBytes;
   @override
   @JsonKey(name: 'date_uploaded')
-  final DateTime? dateUploaded;
+  final String? dateUploaded;
   @override
   @JsonKey(name: 'date_uploaded_unix')
   final int? dateUploadedUnix;
@@ -1200,7 +1287,7 @@ abstract class _Torrent implements Torrent {
           @JsonKey(name: 'peers') final int peers,
           @JsonKey(name: 'size') final String size,
           @JsonKey(name: 'size_bytes') final int sizeBytes,
-          @JsonKey(name: 'date_uploaded') final DateTime? dateUploaded,
+          @JsonKey(name: 'date_uploaded') final String? dateUploaded,
           @JsonKey(name: 'date_uploaded_unix') final int? dateUploadedUnix}) =
       _$_Torrent;
 
@@ -1232,7 +1319,7 @@ abstract class _Torrent implements Torrent {
   int get sizeBytes;
   @override
   @JsonKey(name: 'date_uploaded')
-  DateTime? get dateUploaded;
+  String? get dateUploaded;
   @override
   @JsonKey(name: 'date_uploaded_unix')
   int? get dateUploadedUnix;
