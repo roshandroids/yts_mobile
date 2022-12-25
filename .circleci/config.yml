@@ -9,14 +9,21 @@ executors:
       - image: 'cimg/android:2022.06'
 
 commands:
-  analyze:
-    description: >-
-      Run lint checks Flutter code base on the rules set on
-      `analysis_options.yml`
+  install-flutter:
+    steps:
+      - checkout
+      - run:
+          name: Set Flutter vesion
+          command: echo 'export FLUTTER_VERSION="3.3.9"' >> $BASH_ENV
+      - flutter/install_sdk_and_pub:
+          flutter_version: ${FLUTTER_VERSION}
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
+  dart_analyze:
     steps:
       - run:
-          command: flutter analyze .
-          name: Analyze
+          name: Check analyze
+          command: |
+            flutter analyze || exit
   build-android:
     description: Builds APK for Android
     steps:
@@ -45,30 +52,22 @@ jobs:
     steps:
       - checkout
       - install-flutter
-      - dart_format
+      - format
       - dart_analyze
       - run: flutter test --no-sound-null-safety
   build-android:
-    environment:
-      FLUTTER_CHANNEL: stable
-      FLUTTER_VERSION: 3.0.1
     executor: android
     steps:
       - checkout
-      - flutter/install_sdk_and_pub:
-          flutter_version: 3.0.1
+      - install-flutter
       - build-android
   tests:
-    environment:
-      FLUTTER_CHANNEL: stable
-      FLUTTER_VERSION: 3.0.1
     executor: android
     steps:
       - checkout
-      - flutter/install_sdk_and_pub:
-          flutter_version: 3.0.1
+      - install-flutter
       - format
-      - analyze
+      - dart_analyze
       - test
 
 workflows:
