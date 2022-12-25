@@ -36,24 +36,34 @@ class MoviesController<T> extends StateNotifier<BaseState<dynamic>> {
 
   /// [fetchLatestMovies] fetch latest movies based on filter query params
   Future<void> fetchLatestMovies({
-    int page = 1,
-    bool forceRefresh = false,
+    required int page,
+    bool forceRefresh = true,
     int limit = 20,
   }) async {
-    state = const BaseState<void>.loading();
+    if (page == 1) {
+      state = const BaseState<void>.loading();
+    }
     final response = await _moviesRepository.fetchLatestMovies(
       forceRefresh: forceRefresh,
       limit: limit,
       page: page,
     );
+
     state = response.fold(
       (success) {
         final previousData = ref.read(latestMoviesProvider);
-        final newData = [...previousData, ...success.results];
-        ref.read(latestMoviesProvider.notifier).state = newData;
-        return BaseState<PaginatedResponse<MovieModel>>.success(
-          data: success.copyWith(results: newData),
-        );
+
+        ref.read(latestMoviesProvider.notifier).state =
+            ref.read(latestMoviesProvider).copyWith(
+                  limit: success.limit,
+                  page: success.page,
+                  nextPage: success.page + 1,
+                  totalResults: success.totalResults,
+                  results: [...previousData.results, ...success.results]
+                      .unique((element) => element.id),
+                  isEnd: success.page * success.limit == success.totalResults,
+                );
+        return BaseState<PaginatedResponse<MovieModel>>.success(data: success);
       },
       BaseState.error,
     );
