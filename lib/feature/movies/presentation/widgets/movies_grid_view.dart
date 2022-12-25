@@ -18,7 +18,7 @@ class _LatestMoviesGridViewState extends ConsumerState<LatestMoviesGridView> {
   void initState() {
     _refreshController = RefreshController();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(latestMoviesController.notifier).fetchLatestMovies();
+      ref.read(latestMoviesController.notifier).fetchLatestMovies(page: 1);
     });
     super.initState();
   }
@@ -27,13 +27,16 @@ class _LatestMoviesGridViewState extends ConsumerState<LatestMoviesGridView> {
     _refreshController.requestRefresh();
     ref
         .read(latestMoviesController.notifier)
-        .fetchLatestMovies(forceRefresh: true);
+        .fetchLatestMovies(forceRefresh: true, page: 1);
     _refreshController.refreshCompleted();
   }
 
-  void onLoading(int page) {
-    _refreshController.requestLoading();
-    ref.read(latestMoviesController.notifier).fetchLatestMovies(page: page);
+  Future<void> onLoading() async {
+    await _refreshController.requestLoading();
+    final page = ref.read(latestMoviesProvider).nextPage!;
+    await ref
+        .read(latestMoviesController.notifier)
+        .fetchLatestMovies(page: page, forceRefresh: true);
     _refreshController.loadComplete();
   }
 
@@ -45,14 +48,14 @@ class _LatestMoviesGridViewState extends ConsumerState<LatestMoviesGridView> {
       initial: (_) => const ListItemShimmer(),
       loading: (_) => const ListItemShimmer(),
       success: (success) {
-        final data = success.data as PaginatedResponse<MovieModel>;
+        final movieList = ref.watch(latestMoviesProvider);
         return SmartRefresher(
           controller: _refreshController,
           onRefresh: onRefresh,
-          onLoading: () => onLoading(data.page + 1),
-          enablePullUp: data.results.isNotEmpty,
+          onLoading: onLoading,
+          enablePullUp: !movieList.isEnd,
           child: GridView.builder(
-            itemCount: data.results.length,
+            itemCount: movieList.results.length,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             controller: scrollController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -62,7 +65,7 @@ class _LatestMoviesGridViewState extends ConsumerState<LatestMoviesGridView> {
               childAspectRatio: 6 / 9,
             ),
             itemBuilder: (context, index) {
-              final currentItemData = data.results[index];
+              final currentItemData = movieList.results[index];
               return ProviderScope(
                 overrides: [
                   currentMovieItemProvider.overrideWithValue(currentItemData)
