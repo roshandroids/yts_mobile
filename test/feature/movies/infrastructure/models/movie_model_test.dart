@@ -14,6 +14,10 @@ void main() {
     'rating': 6.0,
     'runtime': 118,
     'genres': ['Crime'],
+    'download_count': 249542,
+    'like_count': 284,
+    'description_intro':
+        'Liu wants to sell his unprofitable travel agency business.',
     'summary': 'Liu wants to sell his unprofitable travel agency business.',
     'description_full':
         'Liu wants to sell his unprofitable travel agency business.',
@@ -32,7 +36,7 @@ void main() {
     'large_cover_image':
         'https://yts.mx/assets/images/movies/the_bargain_2021/large-cover.jpg',
     'state': 'ok',
-    'torrents': <String>[],
+    'torrents': [],
     'date_uploaded': '2022-12-24 01:27:50',
     'date_uploaded_unix': 1671841670
   };
@@ -62,6 +66,10 @@ void main() {
     rating: 6,
     runtime: 118,
     genres: ['Crime'],
+    downloadCount: 249542,
+    likeCount: 284,
+    descriptionIntro:
+        'Liu wants to sell his unprofitable travel agency business.',
     summary: 'Liu wants to sell his unprofitable travel agency business.',
     descriptionFull:
         'Liu wants to sell his unprofitable travel agency business.',
