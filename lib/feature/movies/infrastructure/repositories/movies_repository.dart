@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
@@ -15,19 +16,20 @@ final moviesRepositoryProvider = Provider<MoviesRepository>(
 /// People repository interface
 abstract class MoviesRepository {
   /// Request to get a person details endpoint
-  Future<PaginatedResponse<MovieModel>> getLatestMovies({
-    int page = 1,
-    bool forceRefresh = false,
+  Future<Either<PaginatedResponse<MovieModel>, Failure>> fetchLatestMovies({
+    required int page,
+    required int limit,
+    required bool forceRefresh,
   });
 
-  Future<MovieModel> getMovieDetails(
+  Future<Either<MovieModel, Failure>> fetchMovieDetails(
     int movieId, {
-    bool withImages = false,
-    bool withCast = false,
-    bool forceRefresh = false,
+    bool withImages,
+    bool withCast,
+    bool forceRefresh,
   });
 
-  Future<PaginatedResponse<MovieModel>> getSuggestedMovies(
+  Future<Either<PaginatedResponse<MovieModel>, Failure>> fetchSuggestedMovies(
     int movieId, {
     bool forceRefresh = false,
   });

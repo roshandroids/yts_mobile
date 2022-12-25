@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 
-class MovieDetailPage extends ConsumerWidget {
+class MovieDetailPage extends ConsumerStatefulWidget {
   const MovieDetailPage({
     required this.movieId,
     this.imgCoverUrl,
@@ -16,9 +14,24 @@ class MovieDetailPage extends ConsumerWidget {
   final String? imgCoverUrl;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final movieAsync = ref.watch(movieDetailsProvider(movieId));
-    final suggestedMoviesAsync = ref.watch(suggestedMoviesProvider(movieId));
+  ConsumerState<MovieDetailPage> createState() => _MovieDetailPageState();
+}
+
+class _MovieDetailPageState extends ConsumerState<MovieDetailPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref
+          .read(movieDetailsController.notifier)
+          .fetchMovieDetails(widget.movieId);
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final movieDetailState = ref.watch(movieDetailsController);
+    final suggestedMoviesState = ref.watch(suggestedMoviesController);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: CustomScrollView(
@@ -28,13 +41,13 @@ class MovieDetailPage extends ConsumerWidget {
             leading: const AdaptiveBackBtn(),
             pinned: true,
             flexibleSpace: Hero(
-              tag: 'movie_${movieId}_cover_image',
+              tag: 'movie_${widget.movieId}_cover_image',
               transitionOnUserGestures: true,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
                   AppCachedNetworkImage(
-                    imageUrl: imgCoverUrl!,
+                    imageUrl: widget.imgCoverUrl!,
                   ),
                 ],
               ),
@@ -43,8 +56,12 @@ class MovieDetailPage extends ConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                movieAsync.when(
-                  data: (MovieModel movie) {
+                movieDetailState.maybeMap(
+                  initial: (_) => CustomShimmer(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                  ),
+                  success: (value) {
+                    final movie = value.data as MovieModel;
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: Column(
@@ -180,18 +197,17 @@ class MovieDetailPage extends ConsumerWidget {
                           const SizedBox(height: 10),
                           SizedBox(
                             height: size.height / 5,
-                            child: suggestedMoviesAsync.when(
-                              data: (PaginatedResponse<MovieModel> data) {
+                            child: suggestedMoviesState.maybeMap(
+                              success: (success) {
+                                final movieData = success.data
+                                    as PaginatedResponse<MovieModel>;
                                 return ListView.builder(
                                   itemExtent: size.width / 2,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: 5,
+                                  itemCount: movieData.results.length,
                                   itemBuilder: (context, index) {
-                                    final currentMovieFromIndex = ref
-                                        .watch(suggestedMoviesProvider(index))
-                                        .whenData((pageData) {
-                                      return pageData.results[index];
-                                    });
+                                    final currentMovieFromIndex =
+                                        movieData.results[index];
                                     return ProviderScope(
                                       overrides: [
                                         currentMovieItemProvider
@@ -204,31 +220,28 @@ class MovieDetailPage extends ConsumerWidget {
                                   },
                                 );
                               },
-                              error: (error, stackTrace) {
-                                log('Error fetching movie details');
-                                log(error.toString());
-                                return const SizedBox.shrink();
-                              },
-                              loading: () => ListView.builder(
+                              error: (error) => const SizedBox.shrink(),
+                              loading: (_) => ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 5,
+                                itemExtent: size.width / 2,
                                 itemBuilder: (context, index) => CustomShimmer(
                                   width: size.width / 3,
                                   height: 100,
                                 ),
                               ),
+                              orElse: () => const SizedBox.shrink(),
                             ),
                           )
                         ],
                       ),
                     );
                   },
-                  error: (Object error, StackTrace? stackTrace) {
-                    log('Error fetching movie details');
-                    log(error.toString());
-                    return const ErrorView();
-                  },
-                  loading: () => CustomShimmer(
+                  error: (_) => const ErrorView(),
+                  loading: (_) => CustomShimmer(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                  ),
+                  orElse: () => CustomShimmer(
                     height: MediaQuery.of(context).size.height * 0.5,
                   ),
                 ),
