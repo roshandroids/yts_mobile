@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/feature/movies/movies.dart';
 
@@ -10,10 +11,10 @@ class MoviesRepositoryImpl implements MoviesRepository {
   final HttpService httpService;
 
   @override
-  Future<PaginatedResponse<MovieModel>> getLatestMovies({
-    int page = 1,
-    int limit = 20,
-    bool forceRefresh = false,
+  Future<Either<PaginatedResponse<MovieModel>, Failure>> fetchLatestMovies({
+    required int page,
+    required int limit,
+    required bool forceRefresh,
   }) async {
     final responseData = await httpService.get(
       Endpoints.latestMoviesEndpoint,
@@ -23,21 +24,29 @@ class MoviesRepositoryImpl implements MoviesRepository {
         'limit': limit,
       },
     );
+    return responseData.fold(
+      (success) {
+        try {
+          final parsedResponse = PaginatedResponse.fromJson(
+            success['data'] as Map<String, dynamic>,
+            results: List<MovieModel>.from(
+              ((success['data'] as Map<String, dynamic>)['movies']
+                      as List<dynamic>)
+                  .map((e) => MovieModel.fromJson(e as Map<String, dynamic>)),
+            ),
+          );
 
-    final parsedResponse = PaginatedResponse.fromJson(
-      responseData['data'] as Map<String, dynamic>,
-      results: List<MovieModel>.from(
-        ((responseData['data'] as Map<String, dynamic>)['movies']
-                as List<dynamic>)
-            .map((e) => MovieModel.fromJson(e as Map<String, dynamic>)),
-      ),
+          return Left(parsedResponse);
+        } catch (e) {
+          return Right(Failure.fromException(e));
+        }
+      },
+      Right.new,
     );
-
-    return parsedResponse;
   }
 
   @override
-  Future<MovieModel> getMovieDetails(
+  Future<Either<MovieModel, Failure>> fetchMovieDetails(
     int movieId, {
     bool withImages = false,
     bool withCast = false,
@@ -52,14 +61,24 @@ class MoviesRepositoryImpl implements MoviesRepository {
         'with_cast': withCast,
       },
     );
-    return MovieModel.fromJson(
-      (responseData['data'] as Map<String, dynamic>)['movie']
-          as Map<String, dynamic>,
+    return responseData.fold(
+      (success) {
+        try {
+          final parsedData = MovieModel.fromJson(
+            (success['data'] as Map<String, dynamic>)['movie']
+                as Map<String, dynamic>,
+          );
+          return Left(parsedData);
+        } catch (e) {
+          return Right(Failure.fromException(e));
+        }
+      },
+      Right.new,
     );
   }
 
   @override
-  Future<PaginatedResponse<MovieModel>> getSuggestedMovies(
+  Future<Either<PaginatedResponse<MovieModel>, Failure>> fetchSuggestedMovies(
     int movieId, {
     bool forceRefresh = false,
   }) async {
@@ -70,20 +89,29 @@ class MoviesRepositoryImpl implements MoviesRepository {
         'movie_id': movieId,
       },
     );
-    final responseJson = responseData['data'] as Map<String, dynamic>;
-    final additionalParams = <String, dynamic>{
-      'page_number': 0,
-      'limit': 20,
-    };
-    responseJson.addAll(additionalParams);
-    final parsedResponse = PaginatedResponse.fromJson(
-      responseJson,
-      results: List<MovieModel>.from(
-        (responseJson['movies'] as List<dynamic>)
-            .map((e) => MovieModel.fromJson(e as Map<String, dynamic>)),
-      ),
-    );
+    return responseData.fold(
+      (success) {
+        try {
+          final responseJson = success['data'] as Map<String, dynamic>;
+          final additionalParams = <String, dynamic>{
+            'page_number': 0,
+            'limit': 20,
+          };
+          responseJson.addAll(additionalParams);
+          final parsedResponse = PaginatedResponse.fromJson(
+            responseJson,
+            results: List<MovieModel>.from(
+              (responseJson['movies'] as List<dynamic>)
+                  .map((e) => MovieModel.fromJson(e as Map<String, dynamic>)),
+            ),
+          );
 
-    return parsedResponse;
+          return Left(parsedResponse);
+        } catch (e) {
+          return Right(Failure.fromException(e));
+        }
+      },
+      Right.new,
+    );
   }
 }

@@ -1,4 +1,5 @@
 export 'animations/animations.dart';
+export 'app_state/app_state.dart';
 export 'configs/app_configs.dart';
 export 'constants/constants.dart';
 export 'errors/error.dart';

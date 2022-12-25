@@ -40,4 +40,18 @@ class PaginatedResponse<T> extends Equatable {
 
   @override
   bool get stringify => true;
+
+  PaginatedResponse<T> copyWith({
+    int? page,
+    List<T>? results,
+    int? totalResults,
+    int? limit,
+  }) {
+    return PaginatedResponse<T>(
+      page: page ?? this.page,
+      results: results ?? this.results,
+      totalResults: totalResults ?? this.totalResults,
+      limit: limit ?? this.limit,
+    );
+  }
 }
