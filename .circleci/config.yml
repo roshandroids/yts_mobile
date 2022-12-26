@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@1.0.3
+  android: circleci/android@2.1.2
   flutter: circleci/flutter@1.1.0
 
 commands:
@@ -18,10 +18,6 @@ commands:
           name: Check analyze
           command: |
             flutter analyze || exit
-  # dart-analyze:
-  #   steps:
-  #     - flutter/lint:
-  #         flutter_version: 3.3.9
 
   build-android:
     description: Builds APK for Android
@@ -43,8 +39,9 @@ commands:
   test:
     description: Runs the tests of your Flutter app
     steps:
-       - flutter/unit_test:
-          flutter_version: 3.3.9
+      - run:
+          command: flutter test
+          name: Test
 
   # install-android-ruby-dependencies:
   #   steps:
