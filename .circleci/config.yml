@@ -76,6 +76,7 @@ jobs:
       tag: 2021.10.1
     steps:
       - checkout
+      - install-flutter
       - build-android
       - store_artifacts:
           path: ~/repo/build/app/outputs/flutter-apk/app-develop-debug.apk
