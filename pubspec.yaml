@@ -16,6 +16,7 @@ dependencies:
   dio: ^4.0.6
   equatable: ^2.0.5
   file: ^6.1.4
+  firebase_auth: ^4.2.3
   firebase_core: ^2.4.0
   flex_color_scheme: ^6.1.1
   flutter:
@@ -25,7 +26,6 @@ dependencies:
   freezed_annotation: ^2.2.0
   go_router: ^6.0.0
   hive_flutter: ^1.1.0
-  intl: ^0.18.0
   json_annotation: ^4.7.0
   lottie: ^2.1.0
   mocktail_image_network: ^0.3.1
@@ -56,12 +56,16 @@ flutter:
     - assets/svg/
 
   fonts:
-    - family: Raleway
+    - family: Poppins
       fonts:
-        - asset: assets/fonts/Raleway-Regular.ttf
-        - asset: assets/fonts/Raleway-Bold.ttf
+        - asset: assets/fonts/Poppins-Italic.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Raleway-Medium.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Raleway-Light.ttf
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Light.ttf
           weight: 300
