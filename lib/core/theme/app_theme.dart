@@ -26,7 +26,7 @@ class AppTheme {
         useMaterial3ErrorColors: true,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
-        fontFamily: 'Raleway',
+        fontFamily: 'Poppins',
       );
 
   static ThemeData get darkTheme => FlexThemeData.dark(
@@ -54,6 +54,12 @@ class AppTheme {
         useMaterial3ErrorColors: true,
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
-        fontFamily: 'Raleway',
+        fontFamily: 'Poppins',
       );
+}
+
+extension CoreColors on ThemeData {
+  Color get coreRed => const Color.fromRGBO(242, 63, 64, 1);
+  Color get coreWhite => const Color.fromARGB(255, 255, 255, 255);
+  Color get coreTransparent => const Color.fromRGBO(0, 0, 0, 0);
 }
