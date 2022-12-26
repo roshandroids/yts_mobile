@@ -7,6 +7,7 @@ orbs:
 commands:
   install-flutter:
     steps:
+      - checkout
       - flutter/install_sdk_and_pub:
           flutter_version: 3.3.9
       - flutter/install_android_gradle
@@ -61,6 +62,7 @@ jobs:
     executor:
       name: android/android-machine
     steps:
+      - checkout
       - install-flutter
       - format
       - dart-analyze
@@ -68,6 +70,7 @@ jobs:
   build-android-apk:
     executor: android/android-machine
     steps:
+      - checkout
       - build-android
       - store_artifacts:
           path: ~/repo/build/app/outputs/flutter-apk/app-develop-debug.apk
@@ -77,6 +80,7 @@ jobs:
     executor:
       name: android/android-machine
     steps:
+      - checkout
       - run: cd ~/repo/android && bundle exec fastlane upload_firebase
 
 workflows:
