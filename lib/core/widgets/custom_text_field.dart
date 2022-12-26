@@ -40,35 +40,39 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      style: Theme.of(context).textTheme.bodyText2,
-      decoration: decoration ??
-          InputDecoration(
-            hintText: hintText,
-            hintStyle: hintStyle ?? Theme.of(context).textTheme.subtitle2,
-            labelText: labelText,
-            labelStyle: labelStyle ?? Theme.of(context).textTheme.subtitle2,
-            enabledBorder:
-                const UnderlineInputBorder(borderSide: BorderSide.none),
-            border: const UnderlineInputBorder(borderSide: BorderSide.none),
-            errorBorder:
-                const UnderlineInputBorder(borderSide: BorderSide.none),
-            focusedBorder:
-                const UnderlineInputBorder(borderSide: BorderSide.none),
-            focusedErrorBorder:
-                const UnderlineInputBorder(borderSide: BorderSide.none),
-            suffix: suffix,
-            suffixIcon: suffixIcon,
-          ),
-      inputFormatters: inputFormatters,
-      autovalidateMode: autovalidateMode ?? AutovalidateMode.onUserInteraction,
-      keyboardType: keyboardType ?? TextInputType.text,
-      obscureText: obscureText,
-      validator: validator,
-      onSaved: onSaved,
-      onEditingComplete: onEditingComplete,
-      textInputAction: textInputAction ?? TextInputAction.done,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(6),
+      child: TextFormField(
+        controller: controller,
+        style: Theme.of(context).textTheme.bodyText2,
+        decoration: decoration ??
+            InputDecoration(
+              hintText: hintText,
+              hintStyle: hintStyle ?? Theme.of(context).textTheme.subtitle2,
+              labelText: labelText,
+              labelStyle: labelStyle ?? Theme.of(context).textTheme.subtitle2,
+              enabledBorder:
+                  const UnderlineInputBorder(borderSide: BorderSide.none),
+              border: const UnderlineInputBorder(borderSide: BorderSide.none),
+              errorBorder:
+                  const UnderlineInputBorder(borderSide: BorderSide.none),
+              focusedBorder:
+                  const UnderlineInputBorder(borderSide: BorderSide.none),
+              focusedErrorBorder:
+                  const UnderlineInputBorder(borderSide: BorderSide.none),
+              suffix: suffix,
+              suffixIcon: suffixIcon,
+            ),
+        inputFormatters: inputFormatters,
+        autovalidateMode:
+            autovalidateMode ?? AutovalidateMode.onUserInteraction,
+        keyboardType: keyboardType ?? TextInputType.text,
+        obscureText: obscureText,
+        validator: validator,
+        onSaved: onSaved,
+        onEditingComplete: onEditingComplete,
+        textInputAction: textInputAction ?? TextInputAction.done,
+      ),
     );
   }
 }

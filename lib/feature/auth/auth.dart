@@ -1,1 +1,3 @@
-export 'presentation/splash_screen.dart';
+export 'application/application.dart';
+export 'infrastructure/infrastructure.dart';
+export 'presentation/presentation.dart';

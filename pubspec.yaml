@@ -21,8 +21,10 @@ dependencies:
   flex_color_scheme: ^6.1.1
   flutter:
     sdk: flutter
+  flutter_keyboard_visibility: ^5.4.0
   flutter_riverpod: ^2.1.1
   flutter_svg: ^1.1.6
+  flutter_vector_icons: ^2.0.0
   freezed_annotation: ^2.2.0
   go_router: ^6.0.0
   hive_flutter: ^1.1.0
