@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'tweens/delayed_tween.dart';
+import 'package:yts_mobile/core/widgets/loaders/tweens/delayed_tween.dart';
 
 class LFadingCircle extends StatefulWidget {
   const LFadingCircle({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1200),
     this.controller,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double size;
@@ -19,7 +19,7 @@ class LFadingCircle extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _LFadingCircleState createState() => _LFadingCircleState();
+  State<LFadingCircle> createState() => _LFadingCircleState();
 }
 
 class _LFadingCircleState extends State<LFadingCircle>
@@ -62,20 +62,21 @@ class _LFadingCircleState extends State<LFadingCircle>
         size: Size.square(widget.size),
         child: Stack(
           children: List.generate(12, (i) {
-            final _position = widget.size * .5;
+            final position = widget.size * .5;
             return Positioned.fill(
-              left: _position,
-              top: _position,
+              left: position,
+              top: position,
               child: Transform(
                 transform: Matrix4.rotationZ(30.0 * i * 0.0174533),
                 child: Align(
                   alignment: Alignment.center,
                   child: FadeTransition(
-                    opacity: DelayTween(begin: 0.0, end: 1.0, delay: delays[i])
+                    opacity: DelayTween(begin: 0, end: 1, delay: delays[i])
                         .animate(_controller),
                     child: SizedBox.fromSize(
-                        size: Size.square(widget.size * 0.15),
-                        child: _itemBuilder(i)),
+                      size: Size.square(widget.size * 0.15),
+                      child: _itemBuilder(i),
+                    ),
                   ),
                 ),
               ),
@@ -90,7 +91,8 @@ class _LFadingCircleState extends State<LFadingCircle>
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(
-          color: widget.color ?? Colors.blueGrey[700],
-          shape: BoxShape.circle,
-        ));
+            color: widget.color ?? Colors.blueGrey[700],
+            shape: BoxShape.circle,
+          ),
+        );
 }

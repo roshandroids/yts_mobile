@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'tweens/delayed_tween.dart';
+import 'package:yts_mobile/core/widgets/loaders/tweens/delayed_tween.dart';
 
 class LThreeDotBounce extends StatefulWidget {
   const LThreeDotBounce({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 1400),
     this.controller,
     this.padding,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double size;
@@ -21,7 +21,7 @@ class LThreeDotBounce extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  _LThreeDotBounceState createState() => _LThreeDotBounceState();
+  State<LThreeDotBounce> createState() => _LThreeDotBounceState();
 }
 
 class _LThreeDotBounceState extends State<LThreeDotBounce>
@@ -47,7 +47,7 @@ class _LThreeDotBounceState extends State<LThreeDotBounce>
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: widget.padding ?? const EdgeInsets.only(),
+        padding: widget.padding ?? EdgeInsets.zero,
         child: SizedBox.fromSize(
           size: Size(widget.size * 2, widget.size),
           child: Row(
@@ -55,7 +55,7 @@ class _LThreeDotBounceState extends State<LThreeDotBounce>
             children: List.generate(3, (i) {
               return Flexible(
                 child: ScaleTransition(
-                  scale: DelayTween(begin: 0.0, end: 1.0, delay: i * .2)
+                  scale: DelayTween(begin: 0, end: 1, delay: i * .2)
                       .animate(_controller),
                   child: SizedBox.fromSize(
                     size: Size.square(widget.size * 0.5),

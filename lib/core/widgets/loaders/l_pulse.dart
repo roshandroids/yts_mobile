@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class LPulse extends StatefulWidget {
   const LPulse({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(seconds: 1),
     this.controller,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double size;
@@ -17,7 +17,7 @@ class LPulse extends StatefulWidget {
   final AnimationController? controller;
 
   @override
-  _LPulseState createState() => _LPulseState();
+  State<LPulse> createState() => _LPulseState();
 }
 
 class _LPulseState extends State<LPulse> with SingleTickerProviderStateMixin {
@@ -61,7 +61,8 @@ class _LPulseState extends State<LPulse> with SingleTickerProviderStateMixin {
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: widget.color ?? Colors.blueGrey[700],
-        ));
+            shape: BoxShape.circle,
+            color: widget.color ?? Colors.blueGrey[700],
+          ),
+        );
 }

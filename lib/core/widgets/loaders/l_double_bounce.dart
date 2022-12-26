@@ -1,23 +1,24 @@
+// ignore_for_file: prefer_int_literals
+
 import 'package:flutter/material.dart';
 
 class LDoubleBounce extends StatefulWidget {
   const LDoubleBounce({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 2000),
     this.controller,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double size;
   final IndexedWidgetBuilder? itemBuilder;
   final Duration duration;
   final AnimationController? controller;
-
   @override
-  _LDoubleBounceState createState() => _LDoubleBounceState();
+  State<LDoubleBounce> createState() => _LDoubleBounceState();
 }
 
 class _LDoubleBounceState extends State<LDoubleBounce>
@@ -51,7 +52,9 @@ class _LDoubleBounceState extends State<LDoubleBounce>
           return Transform.scale(
             scale: (1.0 - i - _animation.value.abs()).abs(),
             child: SizedBox.fromSize(
-                size: Size.square(widget.size), child: _itemBuilder(i)),
+              size: Size.square(widget.size),
+              child: _itemBuilder(i),
+            ),
           );
         }),
       ),
@@ -62,7 +65,8 @@ class _LDoubleBounceState extends State<LDoubleBounce>
       ? widget.itemBuilder!(context, index)
       : DecoratedBox(
           decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: (widget.color ?? Colors.blueGrey).withOpacity(0.6),
-        ));
+            shape: BoxShape.circle,
+            color: (widget.color ?? Colors.blueGrey).withOpacity(0.6),
+          ),
+        );
 }

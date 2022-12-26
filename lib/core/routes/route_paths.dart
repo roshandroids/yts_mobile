@@ -4,6 +4,8 @@ import 'package:yts_mobile/core/core.dart';
 class RoutePaths {
   static final AppRouteModel splashRoute =
       AppRouteModel(routeName: 'splashPage', path: '/splashPage');
+  static final AppRouteModel loginRoute =
+      AppRouteModel(routeName: 'loginPage', path: '/loginPage');
   static final AppRouteModel latestMovies =
       AppRouteModel(routeName: 'latest', path: '/latest');
   static final AppRouteModel movieDetail =

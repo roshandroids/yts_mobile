@@ -1,13 +1,15 @@
+// ignore_for_file: prefer_int_literals
+
 import 'package:flutter/material.dart';
 
 class LChasingDots extends StatefulWidget {
   const LChasingDots({
-    Key? key,
+    super.key,
     this.color,
     this.size = 50.0,
     this.itemBuilder,
     this.duration = const Duration(milliseconds: 2000),
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double size;
@@ -15,7 +17,7 @@ class LChasingDots extends StatefulWidget {
   final Duration duration;
 
   @override
-  _LChasingDotsState createState() => _LChasingDotsState();
+  State<LChasingDots> createState() => _LChasingDotsState();
 }
 
 class _LChasingDotsState extends State<LChasingDots>
@@ -58,8 +60,8 @@ class _LChasingDotsState extends State<LChasingDots>
           angle: _rotate.value * 0.0174533,
           child: Stack(
             children: <Widget>[
-              Positioned(top: 0.0, child: _circle(1.0 - _scale.value.abs(), 0)),
-              Positioned(bottom: 0.0, child: _circle(_scale.value.abs(), 1)),
+              Positioned(top: 0, child: _circle(1.0 - _scale.value.abs(), 0)),
+              Positioned(bottom: 0, child: _circle(_scale.value.abs(), 1)),
             ],
           ),
         ),
@@ -76,9 +78,10 @@ class _LChasingDotsState extends State<LChasingDots>
             ? widget.itemBuilder!(context, index)
             : DecoratedBox(
                 decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: widget.color ?? Colors.blueGrey[700],
-              )),
+                  shape: BoxShape.circle,
+                  color: widget.color ?? Colors.blueGrey[700],
+                ),
+              ),
       ),
     );
   }
