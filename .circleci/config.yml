@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  android: circleci/android@2.1.2
+  android: circleci/android@1.0.3
   flutter: circleci/flutter@1.1.0
 
 commands:
@@ -60,7 +60,6 @@ jobs:
   setup-and-format:
     executor:
       name: android/android-machine
-      tag: 2021.10.1
     steps:
       - install-flutter
       - format
@@ -68,7 +67,6 @@ jobs:
       - test
   build-android-apk:
     executor: android/android-machine
-      tag: 2021.10.1
     steps:
       - build-android
       - store_artifacts:
@@ -78,7 +76,6 @@ jobs:
   app-distribution-android:
     executor:
       name: android/android-machine
-      tag: 2021.10.1
     steps:
       - run: cd ~/repo/android && bundle exec fastlane upload_firebase
 
