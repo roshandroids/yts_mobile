@@ -126,9 +126,9 @@ void main() {
           );
         },
       );
-      // test('can convert movie data model toJson', () {
-      //   expect(movieExampleData.toJson(), rawMovieExampleData);
-      // });
+      test('can convert movie data model toJson', () {
+        expect(movieExampleData.toJson(), rawMovieExampleData);
+      });
       test('can convert torrent data model toJson', () {
         expect(torrentExampleData.toJson(), torrentRawExampleData);
       });

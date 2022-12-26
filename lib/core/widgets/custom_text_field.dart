@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yts_mobile/core/core.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
@@ -51,6 +52,10 @@ class CustomTextField extends StatelessWidget {
               hintStyle: hintStyle ?? Theme.of(context).textTheme.subtitle2,
               labelText: labelText,
               labelStyle: labelStyle ?? Theme.of(context).textTheme.subtitle2,
+              errorStyle: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.copyWith(color: Theme.of(context).coreRed),
               enabledBorder:
                   const UnderlineInputBorder(borderSide: BorderSide.none),
               border: const UnderlineInputBorder(borderSide: BorderSide.none),

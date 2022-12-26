@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.18.5 <3.0.0"
 
 dependencies:
+  another_flushbar: ^1.12.29
   cached_network_image: ^3.2.3
   clock: ^1.1.1
   cupertino_icons: ^1.0.5

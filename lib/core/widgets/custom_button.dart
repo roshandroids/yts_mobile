@@ -23,28 +23,35 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      width: width ?? size.width,
-      height: height ?? 50,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Theme.of(context).coreRed,
-        borderRadius: BorderRadius.circular(4),
+    return InkWell(
+      splashFactory: NoSplash.splashFactory,
+      splashColor: Theme.of(context).coreTransparent,
+      focusColor: Theme.of(context).coreTransparent,
+      highlightColor: Theme.of(context).coreTransparent,
+      onTap: onTap,
+      child: Container(
+        width: width ?? size.width,
+        height: height ?? 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Theme.of(context).coreRed,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: loading
+            ? placeHolder ??
+                LThreeDotBounce(
+                  size: 20,
+                  color: Theme.of(context).coreWhite,
+                )
+            : Text(
+                title,
+                style: titleStyle ??
+                    Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(color: Theme.of(context).coreWhite),
+              ),
       ),
-      child: loading
-          ? placeHolder ??
-              LThreeDotBounce(
-                size: 20,
-                color: Theme.of(context).coreWhite,
-              )
-          : Text(
-              title,
-              style: titleStyle ??
-                  Theme.of(context)
-                      .textTheme
-                      .subtitle1
-                      ?.copyWith(color: Theme.of(context).coreWhite),
-            ),
     );
   }
 }
