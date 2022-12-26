@@ -12,10 +12,16 @@ commands:
       - flutter/install_android_gradle
       - flutter/install_android_gem
       - run: flutter pub run build_runner build --delete-conflicting-outputs
-  dart_analyze:
+  dart-analyze:
     steps:
-      - flutter/lint:
-          flutter_version: 3.3.9
+      - run:
+          name: Check analyze
+          command: |
+            flutter analyze || exit
+  # dart-analyze:
+  #   steps:
+  #     - flutter/lint:
+  #         flutter_version: 3.3.9
 
   build-android:
     description: Builds APK for Android
@@ -60,7 +66,7 @@ jobs:
     steps:
       - install-flutter
       - format
-      - dart_analyze
+      - dart-analyze
       - test
   build-android-apk:
     executor: android/android-machine
