@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yts_mobile/core/core.dart';
-import 'package:yts_mobile/feature/auth/auth.dart';
-import 'package:yts_mobile/feature/movies/movies.dart';
+import 'package:yts_mobile/features/auth/auth.dart';
+import 'package:yts_mobile/features/movies/movies.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   // final authState = ref.watch(authProvider);
