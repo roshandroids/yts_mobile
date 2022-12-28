@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Yts Mobile"</string>
+    <string name="facebook_app_id">684242713371980</string>
+    <string name="facebook_client_token">1209952fcbbed1fec04557eec0164d1f</string>
+    <string name="fb_login_protocol_scheme">fb1209952fcbbed1fec04557eec0164d1f</string>
+</resources>
