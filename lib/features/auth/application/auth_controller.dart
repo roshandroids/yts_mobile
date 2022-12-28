@@ -10,6 +10,10 @@ final signupControllerProvider = StateNotifierProvider.autoDispose<
     AuthController<UserModel>, BaseState<dynamic>>(
   _authController,
 );
+final socialLoginControllerProvider = StateNotifierProvider.autoDispose<
+    AuthController<UserModel>, BaseState<dynamic>>(
+  _authController,
+);
 AuthController<T> _authController<T>(Ref ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return AuthController<T>(ref, authRepository);
@@ -44,9 +48,22 @@ class AuthController<T> extends StateNotifier<BaseState<dynamic>> {
     required String password,
   }) async {
     state = const BaseState<void>.loading();
-
     final response =
         await authRepository.signupWithCreds(email: email, password: password);
+    state = response.fold(
+      (success) => BaseState<UserModel>.success(data: success),
+      BaseState.error,
+    );
+  }
+
+  /// [loginWithSocialAuth] login user with google account
+  Future<void> loginWithSocialAuth({
+    required SocialAuthType socialAuthType,
+  }) async {
+    state = const BaseState<void>.loading();
+    final response = await authRepository.loginWithSocialAuth(
+      socialAuthType: socialAuthType,
+    );
     state = response.fold(
       (success) => BaseState<UserModel>.success(data: success),
       BaseState.error,

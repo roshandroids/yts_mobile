@@ -6,7 +6,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/features/auth/auth.dart';
-import 'package:yts_mobile/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:yts_mobile/features/auth/presentation/widgets/social_auth_section.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -42,6 +42,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final signupState = ref.watch(signupControllerProvider);
+    final loginState = ref.watch(loginControllerProvider);
+
     ref.listen(signupControllerProvider, (oldState, newState) async {
       if (newState is BaseError) {
         if (!mounted) return;
@@ -69,9 +71,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 fit: BoxFit.contain,
               ),
             ),
+            actions: [
+              TextButton(
+                onPressed: () => context.go(RoutePaths.latestMovies.path),
+                child: Text(
+                  'Skip'.hardcoded,
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                ),
+              ),
+            ],
           ),
           body: AbsorbPointer(
-            absorbing: signupState is BaseLoading,
+            absorbing: signupState is BaseLoading || loginState is BaseLoading,
             child: InkWell(
               splashFactory: NoSplash.splashFactory,
               splashColor: Theme.of(context).coreTransparent,
@@ -144,7 +157,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             Center(
                               child: CustomButton(
                                 title: 'Sign up'.hardcoded,
-                                loading: signupState is BaseLoading,
+                                loading: signupState is BaseLoading ||
+                                    loginState is BaseLoading,
                                 onTap: signup,
                               ),
                             ),
@@ -179,17 +193,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               ],
                             ),
                             const SizedBox(height: 25),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
-                                SocialLoginButton(
-                                  asset: AppAssets.facebookLogo,
-                                ),
-                                SizedBox(width: 20),
-                                SocialLoginButton(asset: AppAssets.googleLogo),
-                              ],
-                            )
+                            const SocialAuthSection(),
                           ],
                         ),
                       ),

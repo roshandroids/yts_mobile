@@ -201,23 +201,40 @@ class _MovieDetailPageState extends ConsumerState<MovieDetailPage> {
                               success: (success) {
                                 final movieData = success.data
                                     as PaginatedResponse<MovieModel>;
-                                return ListView.builder(
-                                  itemExtent: size.width / 2,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: movieData.results.length,
-                                  itemBuilder: (context, index) {
-                                    final currentMovieFromIndex =
-                                        movieData.results[index];
-                                    return ProviderScope(
-                                      overrides: [
-                                        currentMovieItemProvider
-                                            .overrideWithValue(
-                                          currentMovieFromIndex,
-                                        )
-                                      ],
-                                      child: const GridMovieItem(),
-                                    );
-                                  },
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Similar movies :'.hardcoded,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                    ),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: movieData.results.length,
+                                        itemBuilder: (context, index) {
+                                          final currentMovieFromIndex =
+                                              movieData.results[index];
+                                          return ProviderScope(
+                                            overrides: [
+                                              currentMovieItemProvider
+                                                  .overrideWithValue(
+                                                currentMovieFromIndex,
+                                              )
+                                            ],
+                                            child: const ListMovieItem(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 );
                               },
                               error: (error) => const SizedBox.shrink(),
@@ -232,7 +249,8 @@ class _MovieDetailPageState extends ConsumerState<MovieDetailPage> {
                               ),
                               orElse: () => const SizedBox.shrink(),
                             ),
-                          )
+                          ),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     );

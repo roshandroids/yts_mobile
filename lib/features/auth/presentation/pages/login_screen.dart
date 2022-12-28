@@ -6,7 +6,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/features/auth/auth.dart';
-import 'package:yts_mobile/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:yts_mobile/features/auth/presentation/widgets/social_auth_section.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -43,12 +43,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final loginState = ref.watch(loginControllerProvider);
+    final socialAuthState = ref.watch(socialLoginControllerProvider);
     ref.listen(loginControllerProvider, (oldState, newState) {
       if (newState is BaseError) {
         context.showSnackbar(newState.failure.reason, isError: true);
       }
       if (newState is BaseSuccess<UserModel>) {
-        context.showSnackbar('Welcome ${newState.data?.email}');
+        context
+            .showSnackbar('Welcome ${newState.data?.email}')
+            .then((value) => context.go(RoutePaths.latestMovies.path));
       }
     });
     return KeyboardVisibilityBuilder(
@@ -66,9 +69,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 fit: BoxFit.contain,
               ),
             ),
+            actions: [
+              TextButton(
+                onPressed: () => context.go(RoutePaths.latestMovies.path),
+                child: Text(
+                  'Skip'.hardcoded,
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                ),
+              ),
+            ],
           ),
           body: AbsorbPointer(
-            absorbing: loginState is BaseLoading,
+            absorbing:
+                loginState is BaseLoading || socialAuthState is BaseLoading,
             child: InkWell(
               splashFactory: NoSplash.splashFactory,
               splashColor: Theme.of(context).coreTransparent,
@@ -141,7 +156,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             Center(
                               child: CustomButton(
                                 title: 'Sign in'.hardcoded,
-                                loading: loginState is BaseLoading,
+                                loading: loginState is BaseLoading ||
+                                    socialAuthState is BaseLoading,
                                 onTap: login,
                               ),
                             ),
@@ -176,17 +192,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ],
                             ),
                             const SizedBox(height: 25),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
-                                SocialLoginButton(
-                                  asset: AppAssets.facebookLogo,
-                                ),
-                                SizedBox(width: 20),
-                                SocialLoginButton(asset: AppAssets.googleLogo),
-                              ],
-                            )
+                            const SocialAuthSection(),
                           ],
                         ),
                       ),

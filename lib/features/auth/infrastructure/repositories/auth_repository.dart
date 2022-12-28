@@ -22,4 +22,9 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
+
+  /// [loginWithSocialAuth] login user with google account
+  Future<Either<UserModel, Failure>> loginWithSocialAuth({
+    required SocialAuthType socialAuthType,
+  });
 }

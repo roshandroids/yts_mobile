@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yts_mobile/core/core.dart';
 
 extension SnackbarExtension on BuildContext {
-  Future<void> showSnackbar(String message, {bool isError = false}) async {
+  Future<bool> showSnackbar(String message, {bool isError = false}) async {
     await Flushbar<void>(
       icon: Icon(
         isError
@@ -13,7 +13,7 @@ extension SnackbarExtension on BuildContext {
       ),
       messageText: Text(
         message,
-        maxLines: 2,
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(this)
             .textTheme
@@ -27,5 +27,6 @@ extension SnackbarExtension on BuildContext {
       leftBarIndicatorColor:
           isError ? Theme.of(this).coreRed : Theme.of(this).coreGreen,
     ).show(this);
+    return true;
   }
 }
