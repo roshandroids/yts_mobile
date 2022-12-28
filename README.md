@@ -95,7 +95,7 @@ lib
 - [google_sign_in: ^5.4.2](https://pub.dev/packages/google_sign_in)
 - [flutter_facebook_login 3.0.0](https://pub.dev/packages/flutter_facebook_login)
 
-###### HTTPs & Connectivity :
+## Plugins and Packages used :
 
 ###### HTTPs & Connectivity :
 
