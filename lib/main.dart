@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ void main() {
       };
       runApp(
         ProviderScope(
+          observers: [Logger()],
           overrides: [
             storageServiceProvider.overrideWithValue(initializedStorageService),
           ],
@@ -40,4 +42,20 @@ void main() {
     // ignore: only_throw_errors
     (e, _) => throw e,
   );
+}
+
+class Logger extends ProviderObserver {
+  @override
+  void didUpdateProvider(
+    ProviderBase<dynamic> provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    log('''
+{
+  "provider": "${provider.name ?? provider.runtimeType}",
+  "newValue": "$newValue"
+}''');
+  }
 }

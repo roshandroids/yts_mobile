@@ -22,6 +22,7 @@ dependencies:
   flex_color_scheme: ^6.1.1
   flutter:
     sdk: flutter
+  flutter_facebook_auth: ^5.0.7
   flutter_keyboard_visibility: ^5.4.0
   flutter_riverpod: ^2.1.1
   flutter_svg: ^1.1.6

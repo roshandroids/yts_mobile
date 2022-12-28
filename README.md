@@ -89,7 +89,13 @@ lib
 
 - The `presentation` folder also known as `presentation layer` which contains all the `UI` components.
 
-## Plugins and Packages used :
+##### Authentication :
+
+- [firebase_auth: ^4.2.3](https://pub.dev/packages/firebase_auth)
+- [google_sign_in: ^5.4.2](https://pub.dev/packages/google_sign_in)
+- [flutter_facebook_login 3.0.0](https://pub.dev/packages/flutter_facebook_login)
+
+###### HTTPs & Connectivity :
 
 ###### HTTPs & Connectivity :
 
@@ -99,14 +105,13 @@ lib
 
 - [flutter_riverpod: ^2.1.1](https://pub.dev/packages/flutter_riverpod)
 
-##### Navigation 🧭:
+##### Navigation :
 
 - [go_router: ^6.0.0](https://pub.dev/packages/go_router) -[url_strategy: ^0.2.0](https://pub.dev/packages/url_strategy)
 
 ##### Firebase :
 
 - [firebase_core: ^2.4.0](https://pub.dev/packages/firebase_core)
-- [firebase_auth: ^4.2.3](https://pub.dev/packages/firebase_auth)
 
 ##### Icons, Theme and animations :
 
@@ -116,7 +121,7 @@ lib
 - [flex_color_scheme: ^6.1.1](https://pub.dev/packages/flex_color_scheme)
 - [flutter_launcher_icons: ^0.11.0](https://pub.dev/packages/flutter_launcher_icons)
 
-###### Code generation and testing 🧪 :
+###### Code generation and testing :
 
 - [dartz: ^0.10.1](https://pub.dev/packages/dartz)
 - [freezed_annotation: ^2.2.0](https://pub.dev/packages/freezed_annotation)
@@ -153,11 +158,12 @@ lib
   <tr>
     <td>Light Mode</td>
      <td>Dark Mode</td>
-  </tr>
-  <tr>
+</tr>
+<tr>
     <td><img style="display: inline-block" src="https://user-images.githubusercontent.com/44658790/209639361-488728f2-fd52-4d74-a0af-7c8ab60affb6.png"/>
     </td>
-    <td><img style="display: inline-block" src="https://user-images.githubusercontent.com/44658790/209639375-f294e78e-ccde-4d30-8a15-415ccf37463b.png"/>     </td>
+    <td><img style="display: inline-block" src="https://user-images.githubusercontent.com/44658790/209639375-f294e78e-ccde-4d30-8a15-415ccf37463b.png"/>
+    </td>
     </tr>
     <tr>
     <td><img style="display: inline-block" src ="https://user-images.githubusercontent.com/44658790/209639366-06fcdf78-c28a-4752-92a5-90fb13591549.png"/>
@@ -166,11 +172,9 @@ lib
     </td>
   </tr>
   <tr>
-
 </td>
     <td><img style="display: inline-block" src ="https://user-images.githubusercontent.com/44658790/209640131-e5f09b74-6925-4c21-8e22-035aaddbccaf.gif" />
     <td><img style="display: inline-block" src ="https://user-images.githubusercontent.com/44658790/209639803-2599d420-c558-44f7-a94d-a41f072a38c7.gif" />
 </td>
-
-  </tr>
- </table>
+</tr>
+</table>

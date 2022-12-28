@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/features/auth/auth.dart';
@@ -8,7 +9,9 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.firebaseAuth);
 
   final FirebaseAuth firebaseAuth;
+
   GoogleSignIn get _googleSignIn => GoogleSignIn(scopes: <String>['email']);
+  FacebookAuth get _facebookLogin => FacebookAuth.instance;
 
   @override
   Future<Either<UserModel, Failure>> loginWithCreds({
@@ -68,28 +71,56 @@ class AuthRepositoryImpl implements AuthRepository {
     required SocialAuthType socialAuthType,
   }) async {
     try {
-      final googleUser = await _googleSignIn.signIn();
-      final googleAuth = await googleUser?.authentication;
+      if (socialAuthType == SocialAuthType.google) {
+        final googleUser = await _googleSignIn.signIn();
+        final googleAuth = await googleUser?.authentication;
 
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-      final response = await firebaseAuth.signInWithCredential(credential);
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+        final response = await firebaseAuth.signInWithCredential(credential);
 
-      return Left(
-        UserModel(
-          email: response.user!.email!,
-          userId: response.user!.uid,
-          emailVerified: response.user!.emailVerified,
-        ),
-      );
+        return Left(
+          UserModel(
+            email: response.user!.email!,
+            userId: response.user!.uid,
+            emailVerified: response.user!.emailVerified,
+          ),
+        );
+      } else {
+        final facebookUser = await _facebookLogin
+            .login(permissions: ['public_profile', 'email']);
+        final facebookAuthCredential =
+            FacebookAuthProvider.credential(facebookUser.accessToken!.token);
+        final response =
+            await firebaseAuth.signInWithCredential(facebookAuthCredential);
+        return Left(
+          UserModel(
+            email: response.user!.email!,
+            userId: response.user!.uid,
+            emailVerified: response.user!.emailVerified,
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
+      await _logoutSocialAuth(socialAuthType);
       return Right(
         Failure(e.getMessageFromErrorCode, FailureType.authentication),
       );
     } catch (e) {
+      await _logoutSocialAuth(socialAuthType);
       return Right(Failure.fromException(e));
+    }
+  }
+
+  Future<void> _logoutSocialAuth(SocialAuthType authType) async {
+    if (authType == SocialAuthType.google) {
+      await _googleSignIn.signOut();
+      return;
+    } else {
+      await _facebookLogin.logOut();
+      return;
     }
   }
 }
