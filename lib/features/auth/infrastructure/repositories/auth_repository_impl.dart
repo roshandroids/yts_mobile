@@ -51,7 +51,6 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-      await firebaseAuth.signOut();
       return Left(
         UserModel(
           email: response.user!.email!,

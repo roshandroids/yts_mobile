@@ -77,7 +77,6 @@ class AuthController<T> extends StateNotifier<BaseState<dynamic>> {
   /// [logout] logout user from the app
   Future<void> logout() async {
     state = const BaseState<void>.loading();
-
     await authRepository.logout().then(
           (value) => ref.read(storageServiceProvider).remove('SocialAuthType'),
         );
