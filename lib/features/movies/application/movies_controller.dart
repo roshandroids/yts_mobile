@@ -20,7 +20,7 @@ final suggestedMoviesController = StateNotifierProvider.autoDispose<
 MoviesController<T> _moviesController<T>(Ref ref) {
   final cancelToken = CancelToken();
   ref.onDispose(cancelToken.cancel);
-  return MoviesController<T>(ref);
+  return MoviesController<T>(ref)..fetchLatestMovies(page: 1);
 }
 
 class MoviesController<T> extends StateNotifier<BaseState<dynamic>> {

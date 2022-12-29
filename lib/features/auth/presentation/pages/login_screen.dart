@@ -23,8 +23,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void initState() {
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
+    _emailController = TextEditingController(text: 'roshan@gmail.com');
+    _passwordController = TextEditingController(text: r'Ro$han55');
     _showPassword = ValueNotifier(false);
     super.initState();
   }
@@ -49,9 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context.showSnackbar(newState.failure.reason, isError: true);
       }
       if (newState is BaseSuccess<UserModel>) {
-        context
-            .showSnackbar('Welcome ${newState.data?.email}')
-            .then((value) => context.go(RoutePaths.latestMovies.path));
+        context.showSnackbar('Welcome ${newState.data?.email}');
       }
     });
     return KeyboardVisibilityBuilder(

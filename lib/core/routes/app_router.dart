@@ -7,7 +7,7 @@ import 'package:yts_mobile/features/auth/auth.dart';
 import 'package:yts_mobile/features/movies/movies.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
-  // final authState = ref.watch(authProvider);
+  final authState = ref.watch(authStatusProvider);
   final key = GlobalKey<NavigatorState>();
 
   return GoRouter(
@@ -62,30 +62,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
-      return null;
+      if (authState.isLoading || authState.hasError) return null;
 
-      // return RoutePaths.loginRoute.path;
+      final isAuth = authState.valueOrNull != null;
 
-      // If our async state is loading, don't perform redirects, yet
-      // if (authState.isLoading || authState.hasError) return null;
+      final isSplash = state.location == RoutePaths.splashRoute.path;
+      if (isSplash) {
+        return isAuth
+            ? RoutePaths.latestMovies.path
+            : RoutePaths.loginRoute.path;
+      }
 
-      // // Here we guarantee that hasData == true, i.e. we have a readable value
+      final isLoggingIn = state.location == RoutePaths.loginRoute.path;
+      if (isLoggingIn) return isAuth ? RoutePaths.latestMovies.path : null;
 
-      // // This has to do with how the FirebaseAuth SDK handles the "log-in" state
-      // // Returning `null` means "we are not authorized"
-      // final isAuth = authState.valueOrNull != null;
-
-      // final isSplash = state.location == RoutePaths.splashRoute.path;
-      // if (isSplash) {
-      //   return isAuth
-      //       ? RoutePaths.latestMovies.path
-      //       : RoutePaths.loginRoute.path;
-      // }
-
-      // final isLoggingIn = state.location == RoutePaths.loginRoute.path;
-      // if (isLoggingIn) return isAuth ? RoutePaths.latestMovies.path : null;
-
-      // return isAuth ? null : RoutePaths.splashRoute.path;
+      return isAuth ? null : RoutePaths.splashRoute.path;
     },
     debugLogDiagnostics: kDebugMode,
   );

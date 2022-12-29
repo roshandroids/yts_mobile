@@ -6,7 +6,8 @@ import 'package:yts_mobile/features/auth/auth.dart';
 final authRepositoryProvider = Provider<AuthRepository>(
   (ref) {
     final firebaseAuth = ref.watch(firebaseAuthProvider);
-    return AuthRepositoryImpl(firebaseAuth);
+    final storageService = ref.watch(storageServiceProvider);
+    return AuthRepositoryImpl(firebaseAuth, storageService);
   },
 );
 
@@ -27,4 +28,7 @@ abstract class AuthRepository {
   Future<Either<UserModel, Failure>> loginWithSocialAuth({
     required SocialAuthType socialAuthType,
   });
+
+  /// [logout] login user with google account
+  Future<Either<bool, Failure>> logout();
 }

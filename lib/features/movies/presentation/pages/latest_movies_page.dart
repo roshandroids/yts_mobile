@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yts_mobile/core/core.dart';
+import 'package:yts_mobile/features/auth/auth.dart';
 import 'package:yts_mobile/features/movies/movies.dart';
 
 class LatestMoviesPage extends ConsumerWidget {
@@ -34,6 +35,12 @@ class LatestMoviesPage extends ConsumerWidget {
                   );
             },
           ),
+          IconButton(
+            onPressed: () {
+              ref.read(loginControllerProvider.notifier).logout();
+            },
+            icon: const Icon(Icons.lock_open_rounded),
+          )
         ],
       ),
       body: const LatestMoviesGridView(),
