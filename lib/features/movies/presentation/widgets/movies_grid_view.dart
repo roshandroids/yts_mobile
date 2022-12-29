@@ -17,9 +17,9 @@ class _LatestMoviesGridViewState extends ConsumerState<LatestMoviesGridView> {
   @override
   void initState() {
     _refreshController = RefreshController();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   ref.read(latestMoviesController.notifier).fetchLatestMovies(page: 1);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(latestMoviesController.notifier).fetchLatestMovies(page: 1);
+    });
     super.initState();
   }
 

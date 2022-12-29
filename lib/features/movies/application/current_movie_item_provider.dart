@@ -10,3 +10,7 @@ import 'package:yts_mobile/features/movies/movies.dart';
 final currentMovieItemProvider = Provider<MovieModel>(
   (ref) => throw UnimplementedError(),
 );
+
+final currentMovieDetailItemProvider = Provider<MovieModel>(
+  (ref) => throw UnimplementedError(),
+);

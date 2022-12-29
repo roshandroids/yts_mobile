@@ -52,9 +52,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             name: RoutePaths.movieDetail.routeName,
             pageBuilder: (context, state) => FadeTransitionPage(
               key: state.pageKey,
-              child: MovieDetailPage(
-                movieId: int.parse(state.params['id']!),
-                imgCoverUrl: state.extra as String?,
+              child: ProviderScope(
+                overrides: [
+                  currentMovieDetailItemProvider
+                      .overrideWithValue(state.extra! as MovieModel)
+                ],
+                child: const MovieDetailPage(),
               ),
             ),
           ),
