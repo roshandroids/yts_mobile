@@ -28,7 +28,7 @@ class GridMovieItem extends ConsumerWidget {
             params: {
               'id': '${movie.id}',
             },
-            extra: movie.largeCoverImage,
+            extra: movie,
           );
         },
         child: DecoratedBox(

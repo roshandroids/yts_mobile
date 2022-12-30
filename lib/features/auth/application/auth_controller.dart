@@ -14,6 +14,10 @@ final socialLoginControllerProvider = StateNotifierProvider.autoDispose<
     AuthController<UserModel>, BaseState<dynamic>>(
   _authController,
 );
+final logoutControllerProvider = StateNotifierProvider.autoDispose<
+    AuthController<UserModel>, BaseState<dynamic>>(
+  _authController,
+);
 AuthController<T> _authController<T>(Ref ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return AuthController<T>(ref, authRepository);
@@ -68,5 +72,13 @@ class AuthController<T> extends StateNotifier<BaseState<dynamic>> {
       (success) => BaseState<UserModel>.success(data: success),
       BaseState.error,
     );
+  }
+
+  /// [logout] logout user from the app
+  Future<void> logout() async {
+    state = const BaseState<void>.loading();
+    await authRepository.logout().then(
+          (value) => ref.read(storageServiceProvider).remove('SocialAuthType'),
+        );
   }
 }

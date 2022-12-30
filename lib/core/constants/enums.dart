@@ -1,1 +1,1 @@
-enum SocialAuthType { facebook, google }
+enum SocialAuthType { email, facebook, google }

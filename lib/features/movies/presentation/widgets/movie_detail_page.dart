@@ -6,12 +6,8 @@ import 'package:yts_mobile/features/movies/movies.dart';
 
 class MovieDetailPage extends ConsumerStatefulWidget {
   const MovieDetailPage({
-    required this.movieId,
-    this.imgCoverUrl,
     super.key,
   });
-  final int movieId;
-  final String? imgCoverUrl;
 
   @override
   ConsumerState<MovieDetailPage> createState() => _MovieDetailPageState();
@@ -21,15 +17,15 @@ class _MovieDetailPageState extends ConsumerState<MovieDetailPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref
-          .read(movieDetailsController.notifier)
-          .fetchMovieDetails(widget.movieId);
+      final movieId = ref.read(currentMovieDetailItemProvider).id;
+      ref.read(movieDetailsController.notifier).fetchMovieDetails(movieId);
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final movieItem = ref.watch(currentMovieDetailItemProvider);
     final movieDetailState = ref.watch(movieDetailsController);
     final suggestedMoviesState = ref.watch(suggestedMoviesController);
     final size = MediaQuery.of(context).size;
@@ -41,13 +37,13 @@ class _MovieDetailPageState extends ConsumerState<MovieDetailPage> {
             leading: const AdaptiveBackBtn(),
             pinned: true,
             flexibleSpace: Hero(
-              tag: 'movie_${widget.movieId}_cover_image',
+              tag: 'movie_${movieItem.id}_cover_image',
               transitionOnUserGestures: true,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
                   AppCachedNetworkImage(
-                    imageUrl: widget.imgCoverUrl!,
+                    imageUrl: movieItem.mediumCoverImage,
                   ),
                 ],
               ),

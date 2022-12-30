@@ -9,6 +9,7 @@ A simple mobile client app for browsing movies listed under [YTS website](https:
 - [Plugins and Packages used](#plugins-and-packages-used)
 
 - [Previews](#previews)
+- [How to contribute](#how-to-contribute)
 
 ## App Architecture and Folder Structure
 
@@ -143,7 +144,6 @@ lib
 ##### Others utilities :
 
 - [url_launcher: ^6.1.7](https://pub.dev/packages/url_launcher)
-- [stack_trace: ^1.10.0](https://pub.dev/packages/stack_trace)
 - [shimmer: ^2.0.0](https://pub.dev/packages/shimmer)
 - [pull_to_refresh: ^2.0.0](https://pub.dev/packages/pull_to_refresh)
 - [flutter_keyboard_visibility: ^5.4.0](https://pub.dev/packages/flutter_keyboard_visibility)
@@ -178,3 +178,11 @@ lib
 </td>
 </tr>
 </table>
+
+# How to contribute
+
+<p align="center">
+🚧 This project is still under development phase 🚧</p>
+
+- If encountered any bugs feel free to report [here](https://github.com/flutterians/yts_mobile/issues)
+- If you want to contribute to the project you can send [Pull request](https://github.com/flutterians/yts_mobile/pulls).

@@ -49,9 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context.showSnackbar(newState.failure.reason, isError: true);
       }
       if (newState is BaseSuccess<UserModel>) {
-        context
-            .showSnackbar('Welcome ${newState.data?.email}')
-            .then((value) => context.go(RoutePaths.latestMovies.path));
+        context.showSnackbar('Welcome ${newState.data?.email}');
       }
     });
     return KeyboardVisibilityBuilder(
@@ -71,7 +69,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             actions: [
               TextButton(
-                onPressed: () => context.go(RoutePaths.latestMovies.path),
+                onPressed: () {
+                  ref.read(skippedProvider.notifier).state = true;
+                  context.go(RoutePaths.latestMovies.path);
+                },
                 child: Text(
                   'Skip'.hardcoded,
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(

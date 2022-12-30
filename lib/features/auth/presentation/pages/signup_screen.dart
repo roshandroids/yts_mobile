@@ -51,9 +51,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       }
       if (newState is BaseSuccess<UserModel>) {
         if (!mounted) return;
-        await context.showSnackbar('Account created, login to continue');
-        if (!mounted) return;
-        context.go(RoutePaths.loginRoute.path);
+        await context.showSnackbar('Welcome ${newState.data?.email}');
       }
     });
     return KeyboardVisibilityBuilder(
@@ -73,7 +71,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             ),
             actions: [
               TextButton(
-                onPressed: () => context.go(RoutePaths.latestMovies.path),
+                onPressed: () {
+                  ref.read(skippedProvider.notifier).state = true;
+                  context.go(RoutePaths.latestMovies.path);
+                },
                 child: Text(
                   'Skip'.hardcoded,
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(

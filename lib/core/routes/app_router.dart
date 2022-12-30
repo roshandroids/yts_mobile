@@ -6,90 +6,90 @@ import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/features/auth/auth.dart';
 import 'package:yts_mobile/features/movies/movies.dart';
 
-final goRouterProvider = Provider<GoRouter>((ref) {
-  // final authState = ref.watch(authProvider);
-  final key = GlobalKey<NavigatorState>();
-
-  return GoRouter(
-    initialLocation: RoutePaths.splashRoute.path,
-    navigatorKey: key,
-    routes: [
-      GoRoute(
-        path: RoutePaths.splashRoute.path,
-        name: RoutePaths.splashRoute.routeName,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: state.pageKey,
-          child: const SplashScreen(),
+final goRouterProvider = Provider<GoRouter>(
+  (ref) {
+    final authState = ref.watch(authStatusProvider);
+    final key = GlobalKey<NavigatorState>();
+    return GoRouter(
+      initialLocation: RoutePaths.splashRoute.path,
+      navigatorKey: key,
+      routes: [
+        GoRoute(
+          path: RoutePaths.splashRoute.path,
+          name: RoutePaths.splashRoute.routeName,
+          pageBuilder: (context, state) => FadeTransitionPage(
+            key: state.pageKey,
+            child: const SplashScreen(),
+          ),
+          // redirect: (_, __) => RoutePaths.loginRoute.path,
         ),
-        redirect: (_, __) => RoutePaths.loginRoute.path,
-      ),
-      GoRoute(
-        path: RoutePaths.loginRoute.path,
-        name: RoutePaths.loginRoute.routeName,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: state.pageKey,
-          child: const LoginScreen(),
+        GoRoute(
+          path: RoutePaths.loginRoute.path,
+          name: RoutePaths.loginRoute.routeName,
+          pageBuilder: (context, state) => FadeTransitionPage(
+            key: state.pageKey,
+            child: const LoginScreen(),
+          ),
         ),
-      ),
-      GoRoute(
-        path: RoutePaths.signupRoute.path,
-        name: RoutePaths.signupRoute.routeName,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: state.pageKey,
-          child: const SignupScreen(),
+        GoRoute(
+          path: RoutePaths.signupRoute.path,
+          name: RoutePaths.signupRoute.routeName,
+          pageBuilder: (context, state) => FadeTransitionPage(
+            key: state.pageKey,
+            child: const SignupScreen(),
+          ),
         ),
-      ),
-      GoRoute(
-        path: RoutePaths.latestMovies.path,
-        name: RoutePaths.latestMovies.routeName,
-        pageBuilder: (context, state) => FadeTransitionPage(
-          key: state.pageKey,
-          child: const LatestMoviesPage(),
-        ),
-        routes: [
-          GoRoute(
-            path: RoutePaths.movieDetail.path,
-            name: RoutePaths.movieDetail.routeName,
-            pageBuilder: (context, state) => FadeTransitionPage(
-              key: state.pageKey,
-              child: MovieDetailPage(
-                movieId: int.parse(state.params['id']!),
-                imgCoverUrl: state.extra as String?,
+        GoRoute(
+          path: RoutePaths.latestMovies.path,
+          name: RoutePaths.latestMovies.routeName,
+          pageBuilder: (context, state) => FadeTransitionPage(
+            key: state.pageKey,
+            child: const LatestMoviesPage(),
+          ),
+          routes: [
+            GoRoute(
+              path: RoutePaths.movieDetail.path,
+              name: RoutePaths.movieDetail.routeName,
+              pageBuilder: (context, state) => FadeTransitionPage(
+                key: state.pageKey,
+                child: ProviderScope(
+                  overrides: [
+                    currentMovieDetailItemProvider
+                        .overrideWithValue(state.extra! as MovieModel)
+                  ],
+                  child: const MovieDetailPage(),
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    ],
-    redirect: (BuildContext context, GoRouterState state) {
-      return null;
+          ],
+        ),
+      ],
+      refreshListenable: authState,
+      redirect: (BuildContext context, GoRouterState state) {
+        final authenticated = authState.loggedInStatus;
 
-      // return RoutePaths.loginRoute.path;
+        final isSplash = state.location == RoutePaths.splashRoute.path;
 
-      // If our async state is loading, don't perform redirects, yet
-      // if (authState.isLoading || authState.hasError) return null;
+        if (isSplash) {
+          return authenticated
+              ? RoutePaths.latestMovies.path
+              : RoutePaths.loginRoute.path;
+        }
 
-      // // Here we guarantee that hasData == true, i.e. we have a readable value
+        if (state.subloc == RoutePaths.signupRoute.path) {
+          return RoutePaths.signupRoute.path;
+        }
 
-      // // This has to do with how the FirebaseAuth SDK handles the "log-in" state
-      // // Returning `null` means "we are not authorized"
-      // final isAuth = authState.valueOrNull != null;
-
-      // final isSplash = state.location == RoutePaths.splashRoute.path;
-      // if (isSplash) {
-      //   return isAuth
-      //       ? RoutePaths.latestMovies.path
-      //       : RoutePaths.loginRoute.path;
-      // }
-
-      // final isLoggingIn = state.location == RoutePaths.loginRoute.path;
-      // if (isLoggingIn) return isAuth ? RoutePaths.latestMovies.path : null;
-
-      // return isAuth ? null : RoutePaths.splashRoute.path;
-    },
-    debugLogDiagnostics: kDebugMode,
-  );
-});
+        final isLoggingIn = state.location == RoutePaths.loginRoute.path;
+        if (isLoggingIn) {
+          return authenticated ? RoutePaths.latestMovies.path : null;
+        }
+        return null;
+      },
+      debugLogDiagnostics: kDebugMode,
+    );
+  },
+);
 
 class FadeTransitionPage extends CustomTransitionPage<void> {
   FadeTransitionPage({

@@ -6,4 +6,5 @@ export 'custom_text_field.dart';
 export 'error_view.dart';
 export 'grid_item_shimmer.dart';
 export 'loaders/loaders.dart';
+export 'logout_alert_dialogue.dart';
 export 'shimmer.dart';
