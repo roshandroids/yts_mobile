@@ -10,7 +10,6 @@ final goRouterProvider = Provider<GoRouter>(
   (ref) {
     final authState = ref.watch(authStatusProvider);
     final key = GlobalKey<NavigatorState>();
-    final storageService = ref.watch(storageServiceProvider);
     return GoRouter(
       initialLocation: RoutePaths.splashRoute.path,
       navigatorKey: key,
@@ -65,28 +64,27 @@ final goRouterProvider = Provider<GoRouter>(
           ],
         ),
       ],
+      refreshListenable: authState,
       redirect: (BuildContext context, GoRouterState state) {
-        final skipped = storageService.get('skipped') as bool?;
-        if (skipped ?? false) return null;
-        if (state.subloc == RoutePaths.signupRoute.path) {
-          return RoutePaths.signupRoute.path;
-        }
-
-        if (authState.isLoading || authState.hasError) return null;
-
-        final isAuth = authState.valueOrNull != null;
+        final authenticated = authState.loggedInStatus;
 
         final isSplash = state.location == RoutePaths.splashRoute.path;
+
         if (isSplash) {
-          return isAuth
+          return authenticated
               ? RoutePaths.latestMovies.path
               : RoutePaths.loginRoute.path;
         }
 
-        final isLoggingIn = state.location == RoutePaths.loginRoute.path;
-        if (isLoggingIn) return isAuth ? RoutePaths.latestMovies.path : null;
+        if (state.subloc == RoutePaths.signupRoute.path) {
+          return RoutePaths.signupRoute.path;
+        }
 
-        return isAuth ? null : RoutePaths.splashRoute.path;
+        final isLoggingIn = state.location == RoutePaths.loginRoute.path;
+        if (isLoggingIn) {
+          return authenticated ? RoutePaths.latestMovies.path : null;
+        }
+        return null;
       },
       debugLogDiagnostics: kDebugMode,
     );

@@ -74,35 +74,54 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       if (socialAuthType == SocialAuthType.google) {
         final googleUser = await _googleSignIn.signIn();
-        final googleAuth = await googleUser?.authentication;
+        if (googleUser != null) {
+          final googleAuth = await googleUser.authentication;
 
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
-        );
-        final response = await firebaseAuth.signInWithCredential(credential);
-        await storageService.set('authType', socialAuthType.name);
-        return Left(
-          UserModel(
-            email: response.user!.email!,
-            userId: response.user!.uid,
-            emailVerified: response.user!.emailVerified,
-          ),
-        );
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+
+          final response = await firebaseAuth.signInWithCredential(credential);
+          await storageService.set('authType', socialAuthType.name);
+          return Left(
+            UserModel(
+              email: response.user!.email!,
+              userId: response.user!.uid,
+              emailVerified: response.user!.emailVerified,
+            ),
+          );
+        } else {
+          return Right(
+            Failure(
+              'Something went wrong'.hardcoded,
+              FailureType.authentication,
+            ),
+          );
+        }
       } else {
         final facebookUser = await _facebookLogin
             .login(permissions: ['public_profile', 'email']);
-        final facebookAuthCredential =
-            FacebookAuthProvider.credential(facebookUser.accessToken!.token);
-        final response =
-            await firebaseAuth.signInWithCredential(facebookAuthCredential);
-        return Left(
-          UserModel(
-            email: response.user!.email!,
-            userId: response.user!.uid,
-            emailVerified: response.user!.emailVerified,
-          ),
-        );
+        if (facebookUser.accessToken != null) {
+          final facebookAuthCredential =
+              FacebookAuthProvider.credential(facebookUser.accessToken!.token);
+          final response =
+              await firebaseAuth.signInWithCredential(facebookAuthCredential);
+          return Left(
+            UserModel(
+              email: response.user!.email!,
+              userId: response.user!.uid,
+              emailVerified: response.user!.emailVerified,
+            ),
+          );
+        } else {
+          return Right(
+            Failure(
+              facebookUser.message ?? 'Something went wrong'.hardcoded,
+              FailureType.authentication,
+            ),
+          );
+        }
       }
     } on FirebaseAuthException catch (e) {
       await _logoutSocialAuth(socialAuthType);
@@ -136,9 +155,11 @@ class AuthRepositoryImpl implements AuthRepository {
             break;
           case 'facebook':
             await _facebookLogin.logOut();
+            await firebaseAuth.signOut();
             break;
           case 'google':
             await _googleSignIn.signOut();
+            await firebaseAuth.signOut();
             break;
         }
         return const Left(true);

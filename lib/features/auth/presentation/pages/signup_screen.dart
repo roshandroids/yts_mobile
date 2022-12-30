@@ -71,7 +71,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             ),
             actions: [
               TextButton(
-                onPressed: () => context.go(RoutePaths.latestMovies.path),
+                onPressed: () {
+                  ref.read(skippedProvider.notifier).state = true;
+                  context.go(RoutePaths.latestMovies.path);
+                },
                 child: Text(
                   'Skip'.hardcoded,
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(

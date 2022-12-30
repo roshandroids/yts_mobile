@@ -23,8 +23,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void initState() {
-    _emailController = TextEditingController(text: 'roshan@gmail.com');
-    _passwordController = TextEditingController(text: r'Ro$han55');
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
     _showPassword = ValueNotifier(false);
     super.initState();
   }
@@ -69,7 +69,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             actions: [
               TextButton(
-                onPressed: () => context.go(RoutePaths.latestMovies.path),
+                onPressed: () {
+                  ref.read(skippedProvider.notifier).state = true;
+                  context.go(RoutePaths.latestMovies.path);
+                },
                 child: Text(
                   'Skip'.hardcoded,
                   style: Theme.of(context).textTheme.subtitle1?.copyWith(

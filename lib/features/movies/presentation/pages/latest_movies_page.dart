@@ -11,6 +11,7 @@ class LatestMoviesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scrollControllerProvider = ref.watch(moviesScrollControllerProvider);
     final isDarkTheme = ref.watch(themeProvider).isDarkTheme;
+    final isSkipped = ref.watch(skippedProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -35,12 +36,17 @@ class LatestMoviesPage extends ConsumerWidget {
                   );
             },
           ),
-          IconButton(
-            onPressed: () {
-              ref.read(loginControllerProvider.notifier).logout();
-            },
-            icon: const Icon(Icons.lock_open_rounded),
-          )
+          if (!isSkipped)
+            IconButton(
+              onPressed: () async {
+                final confirm =
+                    await LogoutAlertDialogue.showAlert(context) ?? false;
+                if (confirm) {
+                  await ref.read(loginControllerProvider.notifier).logout();
+                }
+              },
+              icon: const Icon(Icons.lock_open_rounded),
+            )
         ],
       ),
       body: const LatestMoviesGridView(),
