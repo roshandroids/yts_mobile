@@ -1,35 +1,34 @@
 version: 2.1
 
 orbs:
+  android: circleci/android@2.0
   flutter: circleci/flutter@1.1.0
-
-executors:
-  android:
-    docker:
-      - image: 'cimg/android:2022.06'
 
 commands:
   install-flutter:
     steps:
       - checkout
-      - run:
-          name: Set Flutter vesion
-          command: echo 'export FLUTTER_VERSION="3.3.9"' >> $BASH_ENV
       - flutter/install_sdk_and_pub:
-          flutter_version: ${FLUTTER_VERSION}
+          flutter_version: 3.3.9
+      - flutter/install_android_gradle
+      - flutter/install_android_gem
       - run: flutter pub run build_runner build --delete-conflicting-outputs
-  dart_analyze:
+  dart-analyze:
     steps:
       - run:
           name: Check analyze
           command: |
             flutter analyze || exit
+
   build-android:
     description: Builds APK for Android
     steps:
       - run:
           command: flutter build apk
           name: Build APK
+      - store_artifacts:
+          path: ~/repo/build/app/outputs/flutter-apk/app-develop-debug.apk
+
   format:
     description: Run checks if Flutter code is formatted
     steps:
@@ -45,57 +44,58 @@ commands:
           command: flutter test
           name: Test
 
+  # install-android-ruby-dependencies:
+  #   steps:
+  #     - restore_cache:
+  #         key: 1-gems-{{ checksum "android/Gemfile.lock" }}
+  #     - run:
+  #         name: Bundle check
+  #         command: cd ~/android && bundle check || bundle install --path vendor/bundle
+  #     - save_cache:
+  #         name: Save cache
+  #         key: 1-gems-{{ checksum "android/Gemfile.lock" }}
+  #         paths:
+  #           - vendor/bundle
+
 jobs:
   setup-and-format:
     executor:
-      name: android
+      name: android/android-machine
+      resource-class: large
+      tag: 2021.10.1
     steps:
       - checkout
       - install-flutter
       - format
-      - dart_analyze
-      - run: flutter test --no-sound-null-safety
-  build-android:
-    executor: android
+      - dart-analyze
+      - test
+  build-android-apk:
+    executor: 
+      name: android/android-machine
+      resource-class: large
+      tag: 2021.10.1
     steps:
       - checkout
       - install-flutter
       - build-android
       - store_artifacts:
-          path: ~/build/app/outputs/flutter-apk/app-develop-debug.apk
+          path: ~/repo/build/app/outputs/flutter-apk/app-develop-debug.apk
           destination: android.apk
 
   app-distribution-android:
     executor:
-      name: android
+      name: android/android-machine
+      resource-class: large
+      tag: 2021.10.1
     steps:
       - checkout
-      - install-flutter
-      - run: cd ~/android && bundle exec fastlane deploy_develop_to_firebase
-
-  tests:
-    executor: android
-    steps:
-      - checkout
-      - install-flutter
-      - format
-      - dart_analyze
-      - test
+      - run: cd ~/repo/android && bundle exec fastlane upload_firebase
 
 workflows:
   main:
     jobs:
       - setup-and-format
-      - tests
-      - build-android:
-          requires:
-            - setup-and-format
-            - tests
-
-  development-phase:
-    jobs:
-      - setup-and-format
-      - build-android:
+      - build-android-apk:
           requires:
             - setup-and-format
       - app-distribution-approval:

@@ -1,0 +1,17 @@
+# fastlane/Fastfile
+default_platform(:android)
+
+platform :android do
+  desc "Upload to Firebase"
+  lane :upload_firebase do
+    firebase_app_distribution(
+      app: "1:582115471020:android:a45ec6e8a12dcce39d7909",
+      android_artifact_path: '../build/app/outputs/flutter-apk/app-develop-release.apk',
+      groups: "Flutterians",
+      release_notes: changelog_from_git_commits(
+        commits_count: "5",
+        merge_commit_filtering: "exclude_merges"
+      )
+    )
+  end
+end
