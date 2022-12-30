@@ -6,9 +6,10 @@ import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/features/auth/auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  AuthRepositoryImpl(this.firebaseAuth);
+  AuthRepositoryImpl(this.firebaseAuth, this.storageService);
 
   final FirebaseAuth firebaseAuth;
+  final StorageService storageService;
 
   GoogleSignIn get _googleSignIn => GoogleSignIn(scopes: <String>['email']);
   FacebookAuth get _facebookLogin => FacebookAuth.instance;
@@ -23,6 +24,7 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
+      await storageService.set('authType', 'email');
       return Left(
         UserModel(
           email: response.user!.email!,
@@ -49,7 +51,6 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-      await firebaseAuth.signOut();
       return Left(
         UserModel(
           email: response.user!.email!,
@@ -73,35 +74,54 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       if (socialAuthType == SocialAuthType.google) {
         final googleUser = await _googleSignIn.signIn();
-        final googleAuth = await googleUser?.authentication;
+        if (googleUser != null) {
+          final googleAuth = await googleUser.authentication;
 
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
-        );
-        final response = await firebaseAuth.signInWithCredential(credential);
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
 
-        return Left(
-          UserModel(
-            email: response.user!.email!,
-            userId: response.user!.uid,
-            emailVerified: response.user!.emailVerified,
-          ),
-        );
+          final response = await firebaseAuth.signInWithCredential(credential);
+          await storageService.set('authType', socialAuthType.name);
+          return Left(
+            UserModel(
+              email: response.user!.email!,
+              userId: response.user!.uid,
+              emailVerified: response.user!.emailVerified,
+            ),
+          );
+        } else {
+          return Right(
+            Failure(
+              'Something went wrong'.hardcoded,
+              FailureType.authentication,
+            ),
+          );
+        }
       } else {
         final facebookUser = await _facebookLogin
             .login(permissions: ['public_profile', 'email']);
-        final facebookAuthCredential =
-            FacebookAuthProvider.credential(facebookUser.accessToken!.token);
-        final response =
-            await firebaseAuth.signInWithCredential(facebookAuthCredential);
-        return Left(
-          UserModel(
-            email: response.user!.email!,
-            userId: response.user!.uid,
-            emailVerified: response.user!.emailVerified,
-          ),
-        );
+        if (facebookUser.accessToken != null) {
+          final facebookAuthCredential =
+              FacebookAuthProvider.credential(facebookUser.accessToken!.token);
+          final response =
+              await firebaseAuth.signInWithCredential(facebookAuthCredential);
+          return Left(
+            UserModel(
+              email: response.user!.email!,
+              userId: response.user!.uid,
+              emailVerified: response.user!.emailVerified,
+            ),
+          );
+        } else {
+          return Right(
+            Failure(
+              facebookUser.message ?? 'Something went wrong'.hardcoded,
+              FailureType.authentication,
+            ),
+          );
+        }
       }
     } on FirebaseAuthException catch (e) {
       await _logoutSocialAuth(socialAuthType);
@@ -121,6 +141,32 @@ class AuthRepositoryImpl implements AuthRepository {
     } else {
       await _facebookLogin.logOut();
       return;
+    }
+  }
+
+  @override
+  Future<Either<bool, Failure>> logout() async {
+    try {
+      final authType = storageService.get('authType');
+      if (authType != null) {
+        switch (authType) {
+          case 'email':
+            await firebaseAuth.signOut();
+            break;
+          case 'facebook':
+            await _facebookLogin.logOut();
+            await firebaseAuth.signOut();
+            break;
+          case 'google':
+            await _googleSignIn.signOut();
+            await firebaseAuth.signOut();
+            break;
+        }
+        return const Left(true);
+      }
+      return Right(Failure("Couldn't logout", FailureType.exception));
+    } catch (e) {
+      return Right(Failure.fromException(e));
     }
   }
 }

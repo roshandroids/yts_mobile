@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:stack_trace/stack_trace.dart' as stack_trace;
 import 'package:url_strategy/url_strategy.dart';
 import 'package:yts_mobile/app/app.dart';
 import 'package:yts_mobile/core/core.dart';
@@ -24,11 +23,7 @@ void main() {
       await Hive.initFlutter();
       final StorageService initializedStorageService = HiveStorageService();
       await initializedStorageService.init();
-      FlutterError.demangleStackTrace = (StackTrace stack) {
-        if (stack is stack_trace.Trace) return stack.vmTrace;
-        if (stack is stack_trace.Chain) return stack.toTrace().vmTrace;
-        return stack;
-      };
+
       runApp(
         ProviderScope(
           observers: [Logger()],

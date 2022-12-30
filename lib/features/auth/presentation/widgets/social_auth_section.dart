@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:yts_mobile/core/core.dart';
 import 'package:yts_mobile/features/auth/auth.dart';
 
@@ -19,9 +18,7 @@ class SocialAuthSection extends ConsumerWidget {
           context.showSnackbar(newState.failure.reason, isError: true);
         }
         if (newState is BaseSuccess<UserModel>) {
-          context
-              .showSnackbar('Welcome ${newState.data?.email}')
-              .then((value) => context.go(RoutePaths.latestMovies.path));
+          context.showSnackbar('Welcome ${newState.data?.email}');
         }
       },
     );

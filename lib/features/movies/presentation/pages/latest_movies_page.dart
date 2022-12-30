@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:yts_mobile/core/core.dart';
+import 'package:yts_mobile/features/auth/auth.dart';
 import 'package:yts_mobile/features/movies/movies.dart';
 
 class LatestMoviesPage extends ConsumerWidget {
@@ -10,6 +11,7 @@ class LatestMoviesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scrollControllerProvider = ref.watch(moviesScrollControllerProvider);
     final isDarkTheme = ref.watch(themeProvider).isDarkTheme;
+    final isSkipped = ref.watch(skippedProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -34,6 +36,17 @@ class LatestMoviesPage extends ConsumerWidget {
                   );
             },
           ),
+          if (!isSkipped)
+            IconButton(
+              onPressed: () async {
+                final confirm =
+                    await LogoutAlertDialogue.showAlert(context) ?? false;
+                if (confirm) {
+                  await ref.read(loginControllerProvider.notifier).logout();
+                }
+              },
+              icon: const Icon(Icons.lock_open_rounded),
+            )
         ],
       ),
       body: const LatestMoviesGridView(),
