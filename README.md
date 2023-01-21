@@ -4,12 +4,18 @@ A simple mobile client app for browsing movies listed under [YTS website](https:
 
 ## Content
 
+- [Get started](#get-started)
+
 - [App Architecture & Folder Structure](#app-architecture-and-folder-structure)
 
 - [Plugins and Packages used](#plugins-and-packages-used)
 
 - [Previews](#previews)
 - [How to contribute](#how-to-contribute)
+
+## Get Started
+
+To get started, first clone or download the repository to your pc or laptop. Then run ` flutter pub get` command in your terminal to download and cache all the dependencies. After that make sure to run `flutter pub run build_runner build --delete-conflicting-outputs` command to execute the code generator to generate necessary files related to `freezed` and `json serialization`. And you are good to go 🚀.
 
 ## App Architecture and Folder Structure
 
